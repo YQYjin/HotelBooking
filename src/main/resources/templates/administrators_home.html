@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酒店预定系统</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+    <header>
+        <h1 id="username">当前用户：zeimo</h1>
+    </header>
+    
+    <nav>
+        <a href="#" onclick="loadPage('administrators_html/price_adjustment.html')">基价调整</a>
+        <a href="#" onclick="loadPage('administrators_html/print_report.html')">打印报表</a>
+        <a href="#" onclick="backupData()">备份数据</a>
+        <a href="#" onclick="logout()">退出登录</a>
+    </nav>
+    
+    <section id="content">
+        <iframe id="contentFrame" src="" frameborder="0"></iframe>
+    </section>
+    
+    <script>
+        function loadPage(page) {
+            var contentFrame = document.getElementById('contentFrame');
+            var usernameElement = document.getElementById('username');
+    
+            try {
+                contentFrame.src = page;
+            } catch (error) {
+                console.error(error);
+                // 在实际应用中，你可能需要在页面上显示一个错误消息，以提醒用户加载失败
+            }
+        }
+        
+        function backupData() {
+        // 模拟与后端的异步请求
+        setTimeout(function() {
+            // 假设后端返回的数据，这里使用 true 表示备份成功，false 表示备份失败
+            var backendResponse = true; // 可根据需要更改为 false 进行测试备份失败的情况
+
+            // 处理后端返回的数据
+            if (backendResponse) {
+                alert('备份成功！');
+            } else {
+                alert('备份失败，请重试！');
+            }
+        }, 1000); // 模拟1秒的后端处理时间
+    }
+
+    function logout() {
+        // Redirect to the index.html page (adjust the path accordingly)
+        window.location.href = 'index.html';
+    }
+    </script>
+    
+</body>
+</html>

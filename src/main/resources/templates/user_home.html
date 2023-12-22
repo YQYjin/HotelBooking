@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酒店预定系统</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+    <header>
+        <h1 id="username">当前用户：John Doe</h1>
+    </header>
+    
+    <nav>
+        <a href="#" onclick="loadPage('user_html/hotel.html')">预定酒店</a>
+        <a href="#" onclick="loadPage('user_html/reservation.html')">我的预定</a>
+        <a href="#" onclick="loadPage('user_html/credit-card.html')">我的信用卡</a>
+        <a href="#" onclick="loadPage('user_html/email.html')">我的email</a>
+        <a href="#" onclick="loadPage('user_html/checkout.html')">结账</a>
+        <a href="#" onclick="logout()">退出登录</a>
+    </nav>
+    
+    <section id="content">
+        <iframe id="contentFrame" src="" frameborder="0"></iframe>
+    </section>
+    
+    <script>
+        function loadPage(page) {
+            var contentFrame = document.getElementById('contentFrame');
+            var usernameElement = document.getElementById('username');
+    
+            try {
+                contentFrame.src = page;
+            } catch (error) {
+                console.error(error);
+                // 在实际应用中，你可能需要在页面上显示一个错误消息，以提醒用户加载失败
+            }
+        }
+
+        function logout() {
+        // Redirect to the index.html page (adjust the path accordingly)
+        window.location.href = 'index.html';
+    }
+    </script>
+    
+</body>
+</html>

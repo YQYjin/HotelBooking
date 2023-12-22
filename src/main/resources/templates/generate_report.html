@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成报表</title>
+    <script>
+        function generateArrivalReport() {
+            // 获取用户输入的日期
+            var selectedDate = document.getElementById('dateInput').value;
+
+            // 模拟向后端发送请求并接收响应
+            var backendResponse = simulateBackendRequest(selectedDate);
+
+            // 根据后端返回的结果显示消息
+            displayResult(backendResponse);
+        }
+
+        function generateCheckInReport() {
+            // 获取用户输入的日期
+            var selectedDate = document.getElementById('dateInput').value;
+
+            // 模拟向后端发送请求并接收响应
+            var backendResponse = simulateBackendRequest(selectedDate);
+
+            // 根据后端返回的结果显示消息
+            displayResult(backendResponse);
+        }
+
+        function simulateBackendRequest(date) {
+            // 在实际应用中，这里会是向后端发送请求的代码
+            // 此处我们简单模拟后端返回 true 或 false
+            return Math.random() < 0.8; // 模拟80%成功率
+        }
+
+        function displayResult(success) {
+            var resultMessage = document.getElementById('resultMessage');
+            if (success) {
+                resultMessage.innerHTML = '生成成功！';
+                resultMessage.style.color = 'green';
+            } else {
+                resultMessage.innerHTML = '生成失败，请重试。';
+                resultMessage.style.color = 'red';
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="employee.css">
+</head>
+<body>
+    <h2>报表生成</h2>
+    
+    <label for="dateInput">选择日期：</label>
+    <input type="date" id="dateInput" required>
+
+    <br><br>
+
+    <button onclick="generateArrivalReport()">生成每日到达报表</button>
+    <button onclick="generateCheckInReport()">生成每日入住报表</button>
+
+    <br><br>
+
+    <div id="resultMessage"></div>
+</body>
+</html>

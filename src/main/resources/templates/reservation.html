@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预定信息</title>
+    <link rel="stylesheet" href="subpage.css">
+</head>
+<body>
+
+<div id="bookings-container"></div>
+
+<script>
+    // 模拟获取预定信息的函数，可以替换成实际的数据获取逻辑
+    function getBookingsInfo() {
+        // 这里假设从服务器获取的预定信息数组
+        return [
+            { time: "2023-01-01 12:00 PM", type: "提前60天预定" },
+            { time: "2023-01-02 3:00 PM", type: "预付金预定" },
+            
+        ];
+    }
+
+    // 初始化页面时加载预定信息
+    function init() {
+        var bookings = getBookingsInfo();
+        var container = document.getElementById("bookings-container");
+
+        bookings.forEach(function(booking, index) {
+            var bookingInfoDiv = document.createElement("div");
+            bookingInfoDiv.className = "booking-info";
+            bookingInfoDiv.innerHTML = `
+                <h2>预定信息 ${index + 1}</h2>
+                <p><strong>预定时间:</strong> <span class="booking-time">${booking.time}</span></p>
+                <p><strong>预定类型:</strong> <span class="booking-type">${booking.type}</span></p>
+                <button class="cancel-btn" onclick="cancelBooking(${index})">取消预定</button>
+                <button class="change-btn" onclick="changeBooking(${index})">更改预定</button>
+            `;
+            container.appendChild(bookingInfoDiv);
+        });
+    }
+
+    // 取消预定的函数
+    function cancelBooking(index) {
+        // 在这里添加取消预定的逻辑，可以向服务器发送取消请求
+        alert(`预定 ${index + 1} 已取消！`);
+    }
+
+    // 更改预定的函数
+    function changeBooking(index) {
+        // 在这里添加更改预定的逻辑，可以跳转到修改页面或者弹出修改窗口
+        alert(`跳转到修改预定页面或者弹出修改窗口 for 预定 ${index + 1}`);
+    }
+
+    // 页面加载完成时初始化
+    window.onload = init;
+</script>
+
+</body>
+</html>

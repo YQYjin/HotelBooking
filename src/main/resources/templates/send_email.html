@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息查询</title>
+    <link rel="stylesheet" href="employee.css">
+</head>
+<body>
+
+    <h1>用户信息查询</h1>
+
+    <label for="userId">用户ID：</label>
+    <input type="text" id="userId" placeholder="输入用户ID">
+
+    <button onclick="getUserInfo()">获取用户邮箱</button>
+
+    <div id="result"></div>
+
+    <!-- Form for email subject and body -->
+    <form id="emailForm" style="display:none;">
+        <label for="emailSubject">主题：</label>
+        <input type="text" id="emailSubject" placeholder="输入邮件主题">
+
+        <label for="emailBody">邮件内容：</label>
+        <textarea id="emailBody" placeholder="输入邮件内容"></textarea>
+
+        <button onclick="sendEmail()">发送邮件</button>
+        <p id="statusMessage"></p>
+    </form>
+
+    <script>
+        function getUserInfo() {
+            // 获取用户输入的ID
+            var userId = document.getElementById('userId').value;
+
+            // 模拟后端返回的邮箱信息
+            var fakeEmail = '2878934647@qq.com';
+
+            // 显示邮箱信息
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '用户 ' + userId + ' 的邮箱是：' + fakeEmail;
+
+            // 显示发送邮件表单
+            var emailForm = document.getElementById('emailForm');
+            emailForm.style.display = 'block';
+
+            // 保存邮箱信息
+            emailForm.dataset.email = fakeEmail;
+
+            // Reset status message
+            document.getElementById('statusMessage').innerText = '';
+        }
+
+        function sendEmail() {
+            // 获取邮件信息
+            var emailForm = document.getElementById('emailForm');
+            var email = emailForm.dataset.email;
+            var subject = document.getElementById('emailSubject').value;
+            var body = document.getElementById('emailBody').value;
+
+            // 模拟向后端发送邮件信息
+            var success = simulateBackendEmailSending(email, subject, body);
+
+            // 处理后端返回结果
+            var statusMessage = document.getElementById('statusMessage');
+            if (success) {
+                alert('邮件发送成功！');
+            } else {
+                alert('邮件发送失败！');
+            }
+        }
+
+        // 模拟后端发送邮件的函数
+        function simulateBackendEmailSending(email, subject, body) {
+            // 在实际应用中，这里会使用异步请求向后端发送邮件信息
+            // 然后后端处理邮件发送，并返回结果
+
+            // 模拟后端返回结果，这里使用随机数模拟成功或失败
+            var success = Math.random() < 0.5;
+
+            return success;
+        }
+    </script>
+
+</body>
+</html>

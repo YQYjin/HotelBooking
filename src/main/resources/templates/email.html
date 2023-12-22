@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="subpage.css">
+    <title>User Profile</title>
+</head>
+<body>
+
+<div>
+    <h2>我的邮箱</h2>
+    <div id="user-email-container">
+        <p id="user-email">我的email: <span id="email-value"></span></p>
+        <button onclick="editEmail()">修改邮箱</button>
+    </div>
+    <div id="edit-email-container" style="display:none;">
+        <input type="email" id="new-email" placeholder="输入新的邮箱">
+        <button onclick="updateEmail()">更新邮箱</button>
+        <button onclick="cancelEdit()">取消</button>
+    </div>
+    <div id="add-email-container" style="display:none;">
+        <input type="email" id="add-new-email" placeholder="输入新的邮箱">
+        <button onclick="addEmail()">添加邮箱</button>
+    </div>
+</div>
+
+<script>
+    // Simulated user data
+    var userData = {
+        email: "user@example.com"
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Display user email on page load
+        displayUserEmail(userData.email);
+    });
+
+    function displayUserEmail(email) {
+        var emailContainer = document.getElementById('email-value');
+        emailContainer.textContent = email;
+
+        var userContainer = document.getElementById('user-email-container');
+        var editContainer = document.getElementById('edit-email-container');
+        var addContainer = document.getElementById('add-email-container');
+
+        if (email) {
+            userContainer.style.display = 'block';
+            editContainer.style.display = 'none';
+            addContainer.style.display = 'none';
+        } else {
+            userContainer.style.display = 'none';
+            editContainer.style.display = 'none';
+            addContainer.style.display = 'block';
+        }
+    }
+
+    function editEmail() {
+        var userContainer = document.getElementById('user-email-container');
+        var editContainer = document.getElementById('edit-email-container');
+
+        userContainer.style.display = 'none';
+        editContainer.style.display = 'block';
+    }
+
+    function updateEmail() {
+        var newEmail = document.getElementById('new-email').value;
+        // Update simulated user data
+        userData.email = newEmail;
+        // Display updated email
+        displayUserEmail(newEmail);
+        // Reset form
+        document.getElementById('new-email').value = '';
+    }
+
+    function cancelEdit() {
+        var userContainer = document.getElementById('user-email-container');
+        var editContainer = document.getElementById('edit-email-container');
+
+        userContainer.style.display = 'block';
+        editContainer.style.display = 'none';
+    }
+
+    function addEmail() {
+        var newEmail = document.getElementById('add-new-email').value;
+        // Update simulated user data
+        userData.email = newEmail;
+        // Display added email
+        displayUserEmail(newEmail);
+        // Reset form
+        document.getElementById('add-new-email').value = '';
+    }
+</script>
+
+</body>
+</html>

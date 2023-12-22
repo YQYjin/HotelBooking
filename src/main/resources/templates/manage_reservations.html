@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理预定</title>
+    <link rel="stylesheet" href="employee.css">
+</head>
+<body>
+
+    <label for="reservationDate">请输入日期：</label>
+    <input type="date" id="reservationDate">
+
+    <button onclick="fetchReservationInfo()">发送</button>
+
+    <div id="reservationInfo"></div>
+
+    <script>
+        function fetchReservationInfo() {
+            // 模拟数据
+            const mockData = [
+                {
+                    user: "张三",
+                    method: "预付金预定",
+                    time: "2023-01-01 14:00:00"
+                },
+                {
+                    user: "李四",
+                    method: "提前60天预定",
+                    time: "2023-01-02 12:30:00"
+                }
+            ];
+
+            displayReservationInfo(mockData);
+        }
+
+        function displayReservationInfo(data) {
+            const reservationInfoDiv = document.getElementById("reservationInfo");
+            reservationInfoDiv.innerHTML = "";
+
+            data.forEach(item => {
+                const reservationItemDiv = document.createElement("div");
+                reservationItemDiv.classList.add("reservationItem");
+
+                reservationItemDiv.innerHTML = `
+                    <p>用户：${item.user}</p>
+                    <p>预定方式：${item.method}</p>
+                    <p>预定时间：${item.time}</p>
+                    <button onclick="deleteReservation()">删除</button>
+                    <button onclick="editReservation()">修改</button>
+                    <button onclick="confirmCheckIn('${item.time}')">确认入住</button>
+                `;
+
+                reservationInfoDiv.appendChild(reservationItemDiv);
+            });
+        }
+
+        function deleteReservation() {
+            // 实现删除操作的逻辑
+            alert("执行删除操作");
+        }
+
+        function editReservation() {
+            // 实现修改操作的逻辑
+            alert("执行修改操作");
+        }
+
+        function confirmCheckIn(reservationTime) {
+            // 模拟向后端请求获取房间号的过程
+            const roomNumber = "A101"; // 这里应该是后端返回的房间号
+
+            // 更新界面显示
+            alert(`确认入住成功，房间号：${roomNumber}`);
+        }
+    </script>
+
+</body>
+</html>

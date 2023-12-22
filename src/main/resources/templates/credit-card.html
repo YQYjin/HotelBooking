@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="subpage.css">
+    <title>信用卡信息管理</title>
+</head>
+<body>
+
+<h1>信用卡信息</h1>
+
+<!-- 显示信用卡信息 -->
+<div id="creditCardList">
+    <!-- 信用卡信息将在这里显示 -->
+</div>
+
+<!-- 添加信用卡信息表单 -->
+<h2>添加信用卡信息</h2>
+<form id="addCreditCardForm">
+    <label for="cardNumber">卡号：</label>
+    <input type="text" id="cardNumber" name="cardNumber" required>
+    <br>
+    <label for="cardHolder">持卡人：</label>
+    <input type="text" id="cardHolder" name="cardHolder" required>
+    <br>
+    <button type="button" onclick="addCreditCard()">添加信用卡</button>
+</form>
+
+<script>
+    // 模拟信用卡信息数据
+    const creditCardData = [
+        { cardNumber: '1234 5678 9012 3456', cardHolder: '张三' },
+        { cardNumber: '9876 5432 1098 7654', cardHolder: '李四' }
+    ];
+
+    // 显示信用卡信息
+    function displayCreditCards() {
+        const creditCardList = document.getElementById('creditCardList');
+        creditCardList.innerHTML = '';
+
+        creditCardData.forEach(card => {
+            const cardInfo = document.createElement('div');
+            cardInfo.innerHTML = `
+                <p><strong>卡号：</strong>${card.cardNumber}</p>
+                <p><strong>持卡人：</strong>${card.cardHolder}</p>
+                <button type="button" onclick="editCreditCard('${card.cardNumber}')">编辑</button>
+                <button type="button" onclick="deleteCreditCard('${card.cardNumber}')">删除</button>
+                <hr>
+            `;
+            creditCardList.appendChild(cardInfo);
+        });
+    }
+
+    // 添加信用卡信息
+    function addCreditCard() {
+        const form = document.getElementById('addCreditCardForm');
+        const cardNumber = form.elements['cardNumber'].value;
+        const cardHolder = form.elements['cardHolder'].value;
+
+        creditCardData.push({ cardNumber, cardHolder });
+        displayCreditCards();
+
+        // 清空表单
+        form.reset();
+    }
+
+    // 编辑信用卡信息（简化为删除再添加）
+    function editCreditCard(cardNumber) {
+        deleteCreditCard(cardNumber);
+        displayCreditCards();
+    }
+
+    // 删除信用卡信息
+    function deleteCreditCard(cardNumber) {
+        const index = creditCardData.findIndex(card => card.cardNumber === cardNumber);
+        if (index !== -1) {
+            creditCardData.splice(index, 1);
+            displayCreditCards();
+        }
+    }
+
+    // 初始显示信用卡信息
+    displayCreditCards();
+</script>
+
+</body>
+</html>

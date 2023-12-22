@@ -1,0 +1,76 @@
+/* Reset some default styles */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Ensure the body does not show overflow from the background images */
+    background-size: cover; /* Cover the entire viewport */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    animation: backgroundCarousel 30s infinite; /* Adjust the duration as needed */
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+nav {
+    width: 200px;
+    background-color: #f1f1f1;
+    padding: 15px;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+nav a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #ddd;
+}
+
+nav a:hover {
+    background-color: #bbb;
+}
+
+section {
+    margin-left: 220px;
+    padding: 15px;
+    height: calc(100vh - 20px);
+    overflow: auto;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+/*
+@keyframes backgroundCarousel {
+    0%, 100% {
+        background-image: url('image1.jpg'); 
+    }
+    20% {
+        background-image: url('image2.jpg'); 
+    }
+    40% {
+        background-image: url('image3.jpg'); 
+    }
+    60% {
+        background-image: url('image4.jpg'); 
+    }
+    80% {
+        background-image: url('image5.jpg'); 
+    }
+}
+*/
+

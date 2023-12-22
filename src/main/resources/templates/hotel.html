@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预订表单</title>
+    <link rel="stylesheet" href="subpage.css">
+</head>
+<body>
+
+<h1>酒店预订</h1>
+
+<form id="bookingForm" action="submit_booking.php" method="post">
+    <label for="checkInDate">入住日期：</label>
+    <input type="date" id="checkInDate" name="checkInDate" required>
+
+    <label for="bookingType">预订类型：</label>
+    <select id="bookingType" name="bookingType" required>
+        <option value="1">预付金预订</option>
+        <option value="2">提前60天预订</option>
+        <option value="3">常规预订</option>
+        <option value="4">奖励预订</option>
+    </select>
+
+    <button type="button" onclick="applyBooking()">申请预定</button>
+</form>
+
+<script>
+    function applyBooking() {
+        // 在这里添加JavaScript代码来处理用户选择和触发预定逻辑
+        alert('预订申请已提交！');
+        // 这里可以将表单数据提交到后端进行处理
+        // 例如，使用AJAX将数据发送到服务器，并根据服务器的响应显示适当的消息
+    }
+</script>
+
+</body>
+</html>

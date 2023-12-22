@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报表生成</title>
+    <link rel="stylesheet" href="administrators.css">
+</head>
+<body>
+    <h1>报表生成</h1>
+    
+    <label for="start_date">开始日期:</label>
+    <input type="date" id="start_date">
+
+    <label for="end_date">结束日期:</label>
+    <input type="date" id="end_date">
+
+    <button onclick="generateRewardReport()">打印奖励报表</button>
+    <button onclick="generateIncomeReport()">打印预计房间收入报表</button>
+    <button onclick="generateBookingReport()">打印预计入住报表</button>
+
+    <div id="report_output"></div>
+
+    <script>
+        function generateRewardReport() {
+            const startDate = document.getElementById("start_date").value;
+            const endDate = document.getElementById("end_date").value;
+    
+            const fakeBackendData = [
+                { date: "2023-01-01", rewardDiscount: 10 },
+                { date: "2023-01-02", rewardDiscount: 15 },
+                // 更多数据...
+            ];
+    
+            displayReport(fakeBackendData, "奖励报表");
+        }
+    
+        function generateIncomeReport() {
+            const startDate = document.getElementById("start_date").value;
+            const endDate = document.getElementById("end_date").value;
+    
+            const fakeBackendData = [
+                { date: "2023-01-01", expectedIncome: 100 },
+                { date: "2023-01-02", expectedIncome: 120 },
+                // 更多数据...
+            ];
+    
+            displayReport(fakeBackendData, "预计房间收入报表");
+        }
+    
+        function generateBookingReport() {
+            const startDate = document.getElementById("start_date").value;
+            const endDate = document.getElementById("end_date").value;
+    
+            const fakeBackendData = [
+                { date: "2023-01-01", prepayment: 5, prepayment60: 10, regularBooking: 20, rewardBooking: 5, totalRooms: 30 },
+                { date: "2023-01-02", prepayment: 8, prepayment60: 12, regularBooking: 25, rewardBooking: 8, totalRooms: 35 },
+                // 更多数据...
+            ];
+    
+            displayReport(fakeBackendData, "预计入住报表");
+        }
+    
+        function displayReport(data, reportType) {
+            const reportOutput = document.getElementById("report_output");
+            reportOutput.innerHTML = ""; // 清空之前的内容
+    
+            if (data.length === 0) {
+                reportOutput.innerHTML = "<p>没有数据可显示</p>";
+                return;
+            }
+    
+            const table = document.createElement("table");
+    
+            // 创建表头
+            const headerRow = table.insertRow(0);
+            const headerMapping = {
+                date: "日期",
+                rewardDiscount: "奖励折扣",
+                expectedIncome: "预计收入",
+                prepayment: "预付金预定",
+                prepayment60: "提前60天预定",
+                regularBooking: "常规预订",
+                rewardBooking: "奖励预订",
+                totalRooms: "总房间数",
+            };
+    
+            for (const key in data[0]) {
+                const th = document.createElement("th");
+                th.textContent = headerMapping[key];
+                headerRow.appendChild(th);
+            }
+    
+            // 创建表格内容
+            for (let i = 0; i < data.length; i++) {
+                const row = table.insertRow(i + 1);
+                for (const key in data[i]) {
+                    const cell = row.insertCell();
+                    cell.textContent = data[i][key];
+                }
+            }
+    
+            // 添加总计行
+            const totalRow = table.insertRow(data.length + 1);
+            const totalCell = totalRow.insertCell();
+            totalCell.textContent = "总计";
+    
+            // 计算总计
+            let total = 0;
+            for (let i = 0; i < data.length; i++) {
+                total += parseFloat(data[i].totalRooms || data[i].expectedIncome || data[i].rewardDiscount || 0);
+            }
+    
+            // 添加总计值到表格
+            const totalValueCell = totalRow.insertCell();
+            totalValueCell.textContent = total;
+    
+            // 添加平均值行
+            const averageRow = table.insertRow(data.length + 2);
+            const averageCell = averageRow.insertCell();
+            averageCell.textContent = "平均值";
+    
+            // 添加平均值值到表格
+            const averageValueCell = averageRow.insertCell();
+            averageValueCell.textContent = (total / data.length).toFixed(2);
+    
+            // 添加表格到报表输出区域
+            reportOutput.appendChild(table);
+        }
+    </script>
+    
+</body>
+</html>

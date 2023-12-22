@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结账和交罚款</title>
+    <link rel="stylesheet" href="subpage.css">
+</head>
+<body>
+    <h1>结账和交罚款</h1>
+
+    <div class="payment-container">
+        <div class="payment-section">
+            <h2>结账</h2>
+            <p>用户：<span id="userCheckout"></span></p>
+            <p>酒店：<span id="hotelCheckout"></span></p>
+            <p>时间：<span id="timeCheckout"></span></p>
+            <p>费用：￥<span id="checkoutAmount">0.00</span></p>
+            <button class="payment-button" onclick="confirmCheckout()">结账</button>
+        </div>
+
+        <div class="payment-section">
+            <h2>交罚款</h2>
+            <p>用户：<span id="userFine"></span></p>
+            <p>原因：<span id="reasonFine"></span></p>
+            <p>费用：￥<span id="fineAmount">0.00</span></p>
+            <button class="payment-button" onclick="payFine()">交罚款</button>
+        </div>
+    </div>
+
+    <script>
+        // 模拟从后端获取订单和罚单信息的函数
+        function getReceiptInfo() {
+            // 在实际应用中，这里应该是与后端通信的地方
+            // 这里简单地返回一个包含订单信息和罚款信息的假数据
+            return {
+                checkout: {
+                    user: "John Doe",
+                    hotel: "Example Hotel",
+                    time: "2023-01-01",
+                    amount: (Math.random() * 100).toFixed(2),
+                },
+                fine: {
+                    user: "Jane Doe",
+                    reason: "Speeding",
+                    amount: (Math.random() * 50).toFixed(2),
+                },
+            };
+        }
+
+        // 更新结账信息
+        function updateCheckoutInfo() {
+            const userCheckoutElement = document.getElementById('userCheckout');
+            const hotelCheckoutElement = document.getElementById('hotelCheckout');
+            const timeCheckoutElement = document.getElementById('timeCheckout');
+            const checkoutAmountElement = document.getElementById('checkoutAmount');
+
+            const receiptInfo = getReceiptInfo().checkout;
+            
+            userCheckoutElement.textContent = receiptInfo.user;
+            hotelCheckoutElement.textContent = receiptInfo.hotel;
+            timeCheckoutElement.textContent = receiptInfo.time;
+            checkoutAmountElement.textContent = parseFloat(receiptInfo.amount).toFixed(2);
+        }
+
+        // 更新罚款信息
+        function updateFineInfo() {
+            const userFineElement = document.getElementById('userFine');
+            const reasonFineElement = document.getElementById('reasonFine');
+            const fineAmountElement = document.getElementById('fineAmount');
+
+            const receiptInfo = getReceiptInfo().fine;
+            
+            userFineElement.textContent = receiptInfo.user;
+            reasonFineElement.textContent = receiptInfo.reason;
+            fineAmountElement.textContent = parseFloat(receiptInfo.amount).toFixed(2);
+        }
+
+        // 结账按钮点击事件
+        function confirmCheckout() {
+            const receiptInfo = getReceiptInfo().checkout;
+            const confirmCheckout = confirm(`是否确认结账？\n\n用户: ${receiptInfo.user}\n酒店: ${receiptInfo.hotel}\n时间: ${receiptInfo.time}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
+
+            if (confirmCheckout) {
+                const printReceipt = confirm('结账成功！是否要打印票据？');
+                if (printReceipt) {
+                    printReceiptDetails(receiptInfo);
+                }
+            }
+        }
+
+        // 交罚款按钮点击事件
+        function payFine() {
+            const receiptInfo = getReceiptInfo().fine;
+            const confirmFine = confirm(`是否确认交罚款？\n\n用户: ${receiptInfo.user}\n原因: ${receiptInfo.reason}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
+
+            if (confirmFine) {
+                const printReceipt = confirm('罚款支付成功！是否要打印票据？');
+                if (printReceipt) {
+                    printReceiptDetails(receiptInfo);
+                }
+            }
+        }
+
+        // 打印票据详情
+        function printReceiptDetails(receiptInfo) {
+            alert(`打印票据成功！\n\n用户: ${receiptInfo.user}\n酒店: ${receiptInfo.hotel || 'N/A'}\n时间: ${receiptInfo.time || 'N/A'}\n原因: ${receiptInfo.reason || 'N/A'}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
+        }
+
+        // 页面加载时更新费用
+        window.onload = function() {
+            updateCheckoutInfo();
+            updateFineInfo();
+        };
+    </script>
+</body>
+</html>

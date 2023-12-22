@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成罚单</title>
+    <script>
+        // 模拟与后端通信的函数
+        function generateTicket(username) {
+            // 这里应该使用实际的后端接口
+            // 模拟一个成功的情况，金额为0
+            return {
+                success: true,
+                data: {
+                    username: username,
+                    reason: "违规行为",
+                    fine: 10
+                }
+            };
+        }
+
+        // 处理点击生成罚单按钮的函数
+        function handleGenerateTicket() {
+            // 获取用户输入的用户名
+            var username = document.getElementById("username").value;
+
+            // 模拟与后端通信
+            var result = generateTicket(username);
+
+            // 处理后端返回的数据
+            if (result.success) {
+                // 生成成功
+                if (result.data.fine === 0) {
+                    // 金额为0，显示无罚款
+                    alert("生成成功，无罚款");
+                } else {
+                    // 显示罚单详情
+                    alert("生成成功\n用户名: " + result.data.username + "\n原因: " + result.data.reason + "\n罚款价格: " + result.data.fine);
+                }
+            } else {
+                // 生成失败
+                alert("生成失败");
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="employee.css">
+</head>
+<body>
+    <h1>生成罚单</h1>
+    <label for="username">请输入用户名:</label>
+    <input type="text" id="username" placeholder="用户名">
+
+    <button onclick="handleGenerateTicket()">生成罚单</button>
+</body>
+</html>
