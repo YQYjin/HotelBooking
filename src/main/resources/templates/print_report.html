@@ -25,41 +25,116 @@
         function generateRewardReport() {
             const startDate = document.getElementById("start_date").value;
             const endDate = document.getElementById("end_date").value;
-    
-            const fakeBackendData = [
-                { date: "2023-01-01", rewardDiscount: 10 },
-                { date: "2023-01-02", rewardDiscount: 15 },
-                // 更多数据...
-            ];
-    
-            displayReport(fakeBackendData, "奖励报表");
+
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求，使用POST方法发送数据
+            xhr.open("POST", "/getrewardreport", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // 处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 请求成功，解析后端返回的JSON数据
+                        const backendData = JSON.parse(xhr.responseText);
+
+                        // 调用displayReport函数展示报表
+                        displayReport(backendData, "奖励报表");
+                    } else {
+                        // 请求失败，弹窗显示获取报表失败
+                        alert("获取报表失败");
+                    }
+                }
+            };
+
+            // 发送JSON格式的开始和结束时间
+            const requestData = {
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            // 发送请求
+            xhr.send(JSON.stringify(requestData));
         }
+
     
         function generateIncomeReport() {
             const startDate = document.getElementById("start_date").value;
             const endDate = document.getElementById("end_date").value;
-    
-            const fakeBackendData = [
-                { date: "2023-01-01", expectedIncome: 100 },
-                { date: "2023-01-02", expectedIncome: 120 },
-                // 更多数据...
-            ];
-    
-            displayReport(fakeBackendData, "预计房间收入报表");
+
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求，使用POST方法发送数据
+            xhr.open("POST", "/getincomereport", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // 处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 请求成功，解析后端返回的JSON数据
+                        const backendData = JSON.parse(xhr.responseText);
+
+                        // 调用displayReport函数展示报表
+                        displayReport(backendData, "预计房间收入报表");
+                    } else {
+                        // 请求失败，弹窗显示获取报表失败
+                        alert("获取报表失败");
+                    }
+                }
+            };
+
+            // 发送JSON格式的开始和结束时间
+            const requestData = {
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            // 发送请求
+            xhr.send(JSON.stringify(requestData));
         }
+
     
         function generateBookingReport() {
             const startDate = document.getElementById("start_date").value;
             const endDate = document.getElementById("end_date").value;
-    
-            const fakeBackendData = [
-                { date: "2023-01-01", prepayment: 5, prepayment60: 10, regularBooking: 20, rewardBooking: 5, totalRooms: 30 },
-                { date: "2023-01-02", prepayment: 8, prepayment60: 12, regularBooking: 25, rewardBooking: 8, totalRooms: 35 },
-                // 更多数据...
-            ];
-    
-            displayReport(fakeBackendData, "预计入住报表");
+
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求，使用POST方法发送数据
+            xhr.open("POST", "/getcheckinreport", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // 处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 请求成功，解析后端返回的JSON数据
+                        const backendData = JSON.parse(xhr.responseText);
+
+                        // 调用displayReport函数展示报表
+                        displayReport(backendData, "预计入住报表");
+                    } else {
+                        // 请求失败，弹窗显示获取报表失败
+                        alert("获取报表失败");
+                    }
+                }
+            };
+
+            // 发送JSON格式的开始和结束时间
+            const requestData = {
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            // 发送请求
+            xhr.send(JSON.stringify(requestData));
         }
+
     
         function displayReport(data, reportType) {
             const reportOutput = document.getElementById("report_output");

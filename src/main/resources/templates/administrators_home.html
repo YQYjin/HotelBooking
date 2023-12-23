@@ -9,7 +9,7 @@
 <body>
 
     <header>
-        <h1 id="username">当前用户：zeimo</h1>
+        <h1 id="username">当前管理员：</h1>
     </header>
     
     <nav>
@@ -24,6 +24,12 @@
     </section>
     
     <script>
+        // Load the username from localStorage
+        var storedUsername = localStorage.getItem('username');
+        // Set the initial username in the header
+        document.getElementById('username').textContent = '当前管理员：' + (storedUsername || '未登录');
+
+        
         function loadPage(page) {
             var contentFrame = document.getElementById('contentFrame');
             var usernameElement = document.getElementById('username');
@@ -37,24 +43,42 @@
         }
         
         function backupData() {
-        // 模拟与后端的异步请求
-        setTimeout(function() {
-            // 假设后端返回的数据，这里使用 true 表示备份成功，false 表示备份失败
-            var backendResponse = true; // 可根据需要更改为 false 进行测试备份失败的情况
+            // 创建XMLHttpRequest对象
+            var xhr = new XMLHttpRequest();
 
-            // 处理后端返回的数据
-            if (backendResponse) {
-                alert('备份成功！');
-            } else {
-                alert('备份失败，请重试！');
-            }
-        }, 1000); // 模拟1秒的后端处理时间
-    }
+            // 配置Ajax请求
+            xhr.open("GET", "backup", true);
 
-    function logout() {
-        // Redirect to the index.html page (adjust the path accordingly)
-        window.location.href = 'index.html';
-    }
+            // 设置请求完成后的回调函数
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // 请求成功
+                        var response = JSON.parse(xhr.responseText);
+
+                        if (response.success) {
+                            // 后端返回true，备份成功
+                            alert("备份成功！");
+                        } else {
+                            // 后端返回false，备份失败
+                            alert("备份失败，请重试！");
+                        }
+                    } else {
+                        // 请求失败
+                        alert("备份请求失败，请检查网络或重试！");
+                    }
+                }
+            };
+
+            // 发送Ajax请求
+            xhr.send();
+        }
+
+
+        function logout() {
+            // Redirect to the index.html page (adjust the path accordingly)
+            window.location.href = 'index.html';
+        }
     </script>
     
 </body>

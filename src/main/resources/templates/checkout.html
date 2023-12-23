@@ -29,24 +29,55 @@
     </div>
 
     <script>
-        // 模拟从后端获取订单和罚单信息的函数
+        
+        var username = localStorage.getItem('username');
+
+        // 从后端获取订单和罚单信息的函数
         function getReceiptInfo() {
-            // 在实际应用中，这里应该是与后端通信的地方
-            // 这里简单地返回一个包含订单信息和罚款信息的假数据
-            return {
-                checkout: {
-                    user: "John Doe",
-                    hotel: "Example Hotel",
-                    time: "2023-01-01",
-                    amount: (Math.random() * 100).toFixed(2),
-                },
-                fine: {
-                    user: "Jane Doe",
-                    reason: "Speeding",
-                    amount: (Math.random() * 50).toFixed(2),
-                },
+            // 创建一个新的XMLHttpRequest对象
+            var xhr = new XMLHttpRequest();
+
+            // 配置请求
+            xhr.open('GET', '/payment?username=' + encodeURIComponent(username), true);
+
+            // 设置回调函数，处理请求完成时的操作
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 解析从后端获取的 JSON 数据
+                        var data = JSON.parse(xhr.responseText);
+
+                        // 在实际应用中，可能需要根据返回的数据进行相应的处理
+                        // 这里简单地返回一个包含订单信息和罚款信息的假数据
+                        var result = {
+                            checkout: {
+                                user: data.checkout.user,
+                                hotel: data.checkout.hotel,
+                                time: data.checkout.time,
+                                amount: data.checkout.amount,
+                            },
+                            fine: {
+                                user: data.fine.user,
+                                reason: data.fine.reason,
+                                amount: data.fine.amount,
+                            },
+                        };
+
+                        // 在这里处理 result，可能是更新页面上的信息等
+                        console.log(result);
+                    } else {
+                        // 处理请求错误
+                        console.error('Error fetching data from the server.');
+                    }
+                }
             };
+
+            // 发送请求
+            xhr.send();
         }
+
+
+
 
         // 更新结账信息
         function updateCheckoutInfo() {

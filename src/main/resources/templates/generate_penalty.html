@@ -5,18 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>生成罚单</title>
     <script>
-        // 模拟与后端通信的函数
+        // 与后端通信的函数
         function generateTicket(username) {
-            // 这里应该使用实际的后端接口
-            // 模拟一个成功的情况，金额为0
-            return {
-                success: true,
-                data: {
-                    username: username,
-                    reason: "违规行为",
-                    fine: 10
-                }
-            };
+            // 创建一个新的 XMLHttpRequest 对象
+            var xhr = new XMLHttpRequest();
+
+            // 配置请求
+            xhr.open("POST", "/generateticket", false);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // 将数据转换为JSON格式
+            var data = JSON.stringify({ username: username });
+
+            // 发送请求
+            xhr.send(data);
+
+            // 解析后端返回的JSON数据
+            var result = JSON.parse(xhr.responseText);
+
+            return result;
         }
 
         // 处理点击生成罚单按钮的函数
@@ -24,7 +31,7 @@
             // 获取用户输入的用户名
             var username = document.getElementById("username").value;
 
-            // 模拟与后端通信
+            // 与后端通信
             var result = generateTicket(username);
 
             // 处理后端返回的数据

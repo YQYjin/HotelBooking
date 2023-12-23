@@ -11,14 +11,20 @@
 <div id="bookings-container"></div>
 
 <script>
-    // 模拟获取预定信息的函数，可以替换成实际的数据获取逻辑
+    var username = localStorage.getItem('username');
     function getBookingsInfo() {
-        // 这里假设从服务器获取的预定信息数组
-        return [
-            { time: "2023-01-01 12:00 PM", type: "提前60天预定" },
-            { time: "2023-01-02 3:00 PM", type: "预付金预定" },
-            
-        ];
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/getbookings?username=' + encodeURIComponent(username), false);
+        xhr.send();
+
+        if (xhr.status === 200) {
+            // 成功接收到数据
+            return JSON.parse(xhr.responseText);
+        } else {
+            // 处理错误
+            console.error('获取预定信息失败');
+            return [];
+        }
     }
 
     // 初始化页面时加载预定信息
@@ -31,10 +37,10 @@
             bookingInfoDiv.className = "booking-info";
             bookingInfoDiv.innerHTML = `
                 <h2>预定信息 ${index + 1}</h2>
+                <p><strong>预定编号:</strong> <span class="booking-no">${booking.bookno}</span></p>
                 <p><strong>预定时间:</strong> <span class="booking-time">${booking.time}</span></p>
                 <p><strong>预定类型:</strong> <span class="booking-type">${booking.type}</span></p>
                 <button class="cancel-btn" onclick="cancelBooking(${index})">取消预定</button>
-                <button class="change-btn" onclick="changeBooking(${index})">更改预定</button>
             `;
             container.appendChild(bookingInfoDiv);
         });
@@ -42,15 +48,36 @@
 
     // 取消预定的函数
     function cancelBooking(index) {
-        // 在这里添加取消预定的逻辑，可以向服务器发送取消请求
-        alert(`预定 ${index + 1} 已取消！`);
+        var bookingNo = document.querySelector(`.booking-info:nth-child(${index + 1}) .booking-no`).textContent;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/cancelbooking', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        // 取消预定成功
+                        alert(`预定 ${index + 1} 已取消！`);
+                        // 刷新页面或执行其他操作
+                        init();
+                    } else {
+                        // 取消预定失败
+                        alert(`取消预定失败，请重试或联系客服！`);
+                    }
+                } else {
+                    // 处理其他错误
+                    console.error('取消预定请求失败');
+                }
+            }
+        };
+
+        // 发送取消预定请求
+        xhr.send(JSON.stringify({ bookingNo: bookingNo }));
     }
 
-    // 更改预定的函数
-    function changeBooking(index) {
-        // 在这里添加更改预定的逻辑，可以跳转到修改页面或者弹出修改窗口
-        alert(`跳转到修改预定页面或者弹出修改窗口 for 预定 ${index + 1}`);
-    }
 
     // 页面加载完成时初始化
     window.onload = init;

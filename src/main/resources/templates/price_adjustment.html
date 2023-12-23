@@ -6,56 +6,61 @@
     <title>基价管理</title>
     <link rel="stylesheet" href="administrators.css">
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // 获取当前基价
-            function getCurrentBasePrice(callback) {
-                // 模拟向后端发送请求，这里使用setTimeout模拟异步操作
-                setTimeout(function () {
-                    // 假设后端返回的数据为 {"basePrice": 100}
-                    const currentBasePrice = 100;
-                    callback(currentBasePrice);
-                }, 500);
-            }
+        document.addEventListener("DOMContentLoaded", function() {
+            // 获取当前基价并初始化显示
+            getCurrentPrice();
 
-            // 修改基价
-            function updateBasePrice() {
-                const newPrice = document.getElementById('newPrice').value;
+            // 监听修改基价按钮点击事件
+            document.getElementById("modifyButton").addEventListener("click", function() {
+                // 获取输入框中的新基价
+                var newPrice = document.getElementById("newPrice").value;
 
-                // 弹出确认对话框
-                const confirmed = window.confirm('是否确认修改基价？');
-
-                if (confirmed) {
-                    // 模拟向后端发送请求，这里使用setTimeout模拟异步操作
-                    setTimeout(function () {
-                        // 假设后端返回的数据为 {"success": true}
-                        const success = true;
-
-                        if (success) {
-                            // 显示修改成功消息
-                            alert('修改成功');
-                            // 更新当前基价并刷新显示
-                            getCurrentBasePrice(function (currentBasePrice) {
-                                document.getElementById('currentPrice').innerText = currentBasePrice;
-                            });
-                        } else {
-                            // 显示修改失败消息
-                            alert('修改失败');
-                        }
-                    }, 500);
-                } else {
-                    // 用户取消修改，可以不做任何操作或者显示相应的消息
-                    console.log('用户取消修改');
-                }
-            }
-
-            // 初始化页面
-            getCurrentBasePrice(function (currentBasePrice) {
-                document.getElementById('currentPrice').innerText = currentBasePrice;
+                // 发送修改请求
+                modifyPrice(newPrice);
             });
-
-            // 绑定点击事件
-            document.getElementById('modifyButton').addEventListener('click', updateBasePrice);
         });
+
+        // 获取当前基价并初始化显示
+        function getCurrentPrice() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var currentPrice = JSON.parse(xhr.responseText).price;
+                    document.getElementById("currentPrice").innerText = currentPrice;
+                }
+            };
+            xhr.open("GET", "/getprice", true);
+            xhr.send();
+        }
+
+        // 发送修改请求
+        function modifyPrice(newPrice) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            // 修改成功
+                            document.getElementById("result").innerText = "修改成功";
+                            getCurrentPrice(); // 刷新当前基价显示
+                        } else {
+                            // 修改失败
+                            document.getElementById("result").innerText = "修改失败";
+                        }
+                    } else {
+                        // 请求失败
+                        document.getElementById("result").innerText = "请求失败";
+                    }
+                }
+            };
+
+            xhr.open("POST", "modify_price", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            // 将新基价发送到后端
+            xhr.send(JSON.stringify({ newPrice: newPrice }));
+        }
     </script>
 </head>
 <body>

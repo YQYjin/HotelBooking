@@ -9,39 +9,96 @@
             // 获取用户输入的日期
             var selectedDate = document.getElementById('dateInput').value;
 
-            // 模拟向后端发送请求并接收响应
-            var backendResponse = simulateBackendRequest(selectedDate);
+            // 创建 XMLHttpRequest 对象
+            var xhr = new XMLHttpRequest();
 
-            // 根据后端返回的结果显示消息
-            displayResult(backendResponse);
+            // 设置请求方式和请求地址（假设后端接口地址为 '/backend/arrival-report'）
+            xhr.open('POST', '/arrival_report', true);
+
+            // 设置请求头
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // 设置回调函数，处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        // 解析后端返回的JSON数据
+                        var arrivalData = JSON.parse(xhr.responseText);
+
+                        // 调用生成表格函数
+                        generateTable(arrivalData, 'reportTable', '每日到达报表');
+                    } else {
+                        // 处理请求失败的情况，弹窗提示生成失败
+                        alert('生成报表失败，请重试！');
+                    }
+                }
+            };
+
+            // 构造请求体，将日期发送到后端
+            var requestData = { date: selectedDate };
+            xhr.send(JSON.stringify(requestData));
         }
+
 
         function generateCheckInReport() {
             // 获取用户输入的日期
             var selectedDate = document.getElementById('dateInput').value;
 
-            // 模拟向后端发送请求并接收响应
-            var backendResponse = simulateBackendRequest(selectedDate);
+            // 创建 XMLHttpRequest 对象
+            var xhr = new XMLHttpRequest();
 
-            // 根据后端返回的结果显示消息
-            displayResult(backendResponse);
+            // 设置请求方式和请求地址（假设后端接口地址为 '/backend/checkin-report'）
+            xhr.open('POST', '/checkin_report', true);
+
+            // 设置请求头
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // 设置回调函数，处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        // 解析后端返回的JSON数据
+                        var checkInData = JSON.parse(xhr.responseText);
+
+                        // 调用生成表格函数
+                        generateTable(checkInData, 'reportTable', '每日入住报表');
+                    } else {
+                        // 处理请求失败的情况，弹窗提示生成失败
+                        alert('生成报表失败，请重试！');
+                    }
+                }
+            };
+
+            // 构造请求体，将日期发送到后端
+            var requestData = { date: selectedDate };
+            xhr.send(JSON.stringify(requestData));
         }
 
-        function simulateBackendRequest(date) {
-            // 在实际应用中，这里会是向后端发送请求的代码
-            // 此处我们简单模拟后端返回 true 或 false
-            return Math.random() < 0.8; // 模拟80%成功率
-        }
 
-        function displayResult(success) {
-            var resultMessage = document.getElementById('resultMessage');
-            if (success) {
-                resultMessage.innerHTML = '生成成功！';
-                resultMessage.style.color = 'green';
-            } else {
-                resultMessage.innerHTML = '生成失败，请重试。';
-                resultMessage.style.color = 'red';
+        function generateTable(data, tableId, reportType) {
+            var table = document.getElementById(tableId);
+            table.innerHTML = ''; // 清空表格内容
+
+            // 创建表头
+            var headerRow = table.insertRow(0);
+            for (var key in data[0]) {
+                var th = document.createElement('th');
+                th.innerHTML = key;
+                headerRow.appendChild(th);
             }
+
+            // 填充表格数据
+            for (var i = 0; i < data.length; i++) {
+                var row = table.insertRow(i + 1);
+                for (var key in data[i]) {
+                    var cell = row.insertCell();
+                    cell.innerHTML = data[i][key];
+                }
+            }
+
+            // 显示报表类型
+            var resultMessage = document.getElementById('resultMessage');
+            resultMessage.innerHTML = reportType + '已生成';
         }
     </script>
     <link rel="stylesheet" href="employee.css">
@@ -60,5 +117,8 @@
     <br><br>
 
     <div id="resultMessage"></div>
+    <br><br>
+
+    <table id="reportTable"></table>
 </body>
 </html>

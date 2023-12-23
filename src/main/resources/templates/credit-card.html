@@ -25,17 +25,44 @@
     <input type="text" id="cardHolder" name="cardHolder" required>
     <br>
     <button type="button" onclick="addCreditCard()">添加信用卡</button>
+    <button type="button" onclick="editCreditCard()">修改信用卡</button>
+    <button type="button" onclick="deleteCreditCard()">删除信用卡</button>
 </form>
 
 <script>
-    // 模拟信用卡信息数据
-    const creditCardData = [
-        { cardNumber: '1234 5678 9012 3456', cardHolder: '张三' },
-        { cardNumber: '9876 5432 1098 7654', cardHolder: '李四' }
-    ];
-
+    var username = localStorage.getItem('username');
+    
     // 显示信用卡信息
     function displayCreditCards() {
+        var xhr = new XMLHttpRequest();
+
+        // 配置请求，使用POST方法发送数据
+        xhr.open('POST', '/getCreditCardData', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // 设置回调函数，处理请求完成后的逻辑
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // 请求成功
+                var creditCardData = JSON.parse(xhr.responseText);
+                console.log(creditCardData);
+
+                // 返回的数据格式如下
+                // data = [
+                //     { cardNumber: '1234 5678 9012 3456', cardHolder: '张三' },
+                //     { cardNumber: '9876 5432 1098 7654', cardHolder: '李四' }
+                // ];
+
+                // 这里可以根据需要进行进一步的处理
+            } else if (xhr.readyState == 4 && xhr.status != 200) {
+                // 请求失败
+                console.error('Error:', xhr.status);
+            }
+        };
+
+        // 将数据发送到后端
+        xhr.send(JSON.stringify({ username: username }));
+        
         const creditCardList = document.getElementById('creditCardList');
         creditCardList.innerHTML = '';
 
@@ -44,8 +71,6 @@
             cardInfo.innerHTML = `
                 <p><strong>卡号：</strong>${card.cardNumber}</p>
                 <p><strong>持卡人：</strong>${card.cardHolder}</p>
-                <button type="button" onclick="editCreditCard('${card.cardNumber}')">编辑</button>
-                <button type="button" onclick="deleteCreditCard('${card.cardNumber}')">删除</button>
                 <hr>
             `;
             creditCardList.appendChild(cardInfo);
@@ -58,26 +83,71 @@
         const cardNumber = form.elements['cardNumber'].value;
         const cardHolder = form.elements['cardHolder'].value;
 
-        creditCardData.push({ cardNumber, cardHolder });
-        displayCreditCards();
+        // 使用Ajax向后端发送信息
+        var addXhr = new XMLHttpRequest();
+        addXhr.open('POST', '/addcreditcard', true);
+        addXhr.setRequestHeader('Content-Type', 'application/json');
 
-        // 清空表单
-        form.reset();
+        addXhr.onreadystatechange = function () {
+            if (addXhr.readyState == 4) {
+                if (addXhr.status == 200) {
+                    // 请求成功
+                    const response = JSON.parse(addXhr.responseText);
+                    if (response.success) {
+                        alert('添加成功');
+                        // 刷新获取信用卡信息
+                        displayCreditCards();
+                    } else {
+                        alert('添加失败');
+                    }
+                } else {
+                    // 请求失败
+                    console.error('Error:', addXhr.status);
+                }
+            }
+        };
+
+        // 将数据发送到后端
+        addXhr.send(JSON.stringify({ username: username, cardNumber: cardNumber, cardHolder: cardHolder }));
+
     }
 
     // 编辑信用卡信息（简化为删除再添加）
-    function editCreditCard(cardNumber) {
-        deleteCreditCard(cardNumber);
+    function editCreditCard() {
+        deleteCreditCard();
         displayCreditCards();
     }
 
     // 删除信用卡信息
-    function deleteCreditCard(cardNumber) {
-        const index = creditCardData.findIndex(card => card.cardNumber === cardNumber);
-        if (index !== -1) {
-            creditCardData.splice(index, 1);
-            displayCreditCards();
-        }
+    function deleteCreditCard() {
+        const form = document.getElementById('addCreditCardForm');
+        const cardNumber = form.elements['cardNumber'].value;
+        // 使用Ajax向后端发送信息
+        var deleteXhr = new XMLHttpRequest();
+        deleteXhr.open('POST', '/deletecreditcard', true);
+        deleteXhr.setRequestHeader('Content-Type', 'application/json');
+
+        deleteXhr.onreadystatechange = function () {
+            if (deleteXhr.readyState == 4) {
+                if (deleteXhr.status == 200) {
+                    // 请求成功
+                    const response = JSON.parse(deleteXhr.responseText);
+                    if (response.success) {
+                        alert('删除成功');
+                        // 刷新获取信用卡信息
+                        displayCreditCards();
+                    } else {
+                        alert('删除失败');
+                    }
+                } else {
+                    // 请求失败
+                    console.error('Error:', deleteXhr.status);
+                }
+            }
+        };
+
+        // 将数据发送到后端
+        deleteXhr.send(JSON.stringify({ username: username, cardNumber: cardNumber }));
     }
 
     // 初始显示信用卡信息

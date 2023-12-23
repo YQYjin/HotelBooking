@@ -11,28 +11,37 @@
     <label for="reservationDate">请输入日期：</label>
     <input type="date" id="reservationDate">
 
-    <button onclick="fetchReservationInfo()">发送</button>
+    <button onclick="fetchReservationInfo()">显示预定</button>
 
     <div id="reservationInfo"></div>
 
     <script>
         function fetchReservationInfo() {
-            // 模拟数据
-            const mockData = [
-                {
-                    user: "张三",
-                    method: "预付金预定",
-                    time: "2023-01-01 14:00:00"
-                },
-                {
-                    user: "李四",
-                    method: "提前60天预定",
-                    time: "2023-01-02 12:30:00"
-                }
-            ];
+            const reservationDateInput = document.getElementById("reservationDate");
+            const date = reservationDateInput.value;
 
-            displayReservationInfo(mockData);
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求
+            xhr.open("GET", '/show_booking?date=${date}', true); // 替换backend_endpoint为你的后端接口地址
+
+            // 设置回调函数处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) { // 请求完成
+                    if (xhr.status === 200) { // 成功
+                        const responseData = JSON.parse(xhr.responseText);
+                        displayReservationInfo(responseData);
+                    } else {
+                        alert("预定信息获取失败");
+                    }
+                }
+            };
+
+            // 发送请求
+            xhr.send();
         }
+
 
         function displayReservationInfo(data) {
             const reservationInfoDiv = document.getElementById("reservationInfo");
@@ -44,34 +53,87 @@
 
                 reservationItemDiv.innerHTML = `
                     <p>用户：${item.user}</p>
+                    <p>预定编号：${item.bookno}</p>
                     <p>预定方式：${item.method}</p>
                     <p>预定时间：${item.time}</p>
-                    <button onclick="deleteReservation()">删除</button>
-                    <button onclick="editReservation()">修改</button>
-                    <button onclick="confirmCheckIn('${item.time}')">确认入住</button>
+                    <button onclick="deleteReservation('${item.bookno}')">删除</button>
+                    <button onclick="confirmCheckIn('${item.bookno}')">确认入住</button>
                 `;
 
                 reservationInfoDiv.appendChild(reservationItemDiv);
             });
         }
 
-        function deleteReservation() {
-            // 实现删除操作的逻辑
-            alert("执行删除操作");
+        function deleteReservation(bookno) {
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求
+            xhr.open("POST", "/delete_booking", true); // 替换backend_delete_endpoint为你的后端删除接口地址
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            // 设置回调函数处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) { // 请求完成
+                    if (xhr.status === 200) { // 成功
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            alert("删除成功");
+                        } else {
+                            alert("删除失败");
+                        }
+                    } else {
+                        alert("删除失败");
+                    }
+                }
+            };
+
+            // 将bookno作为POST数据发送
+            var data = JSON.stringify({ bookno: bookno });
+
+            // 发送请求
+            xhr.send(data);
         }
 
-        function editReservation() {
-            // 实现修改操作的逻辑
-            alert("执行修改操作");
+
+        function confirmCheckIn(bookno) {
+            // 创建XMLHttpRequest对象
+            var xhr = new XMLHttpRequest();
+
+            // 配置请求
+            xhr.open('POST', '/checkinroom', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // 处理请求结果
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // 解析后端返回的 JSON 数据
+                    var response = JSON.parse(xhr.responseText);
+
+                    // 后端返回成功
+                    if (response.success) {
+                        const roomNumber = response.roomNumber; // 从后端返回的数据中获取房间号
+                        alert(`确认入住成功，房间号：${roomNumber}`);
+                    } else {
+                        // 后端返回失败
+                        alert('入住失败，无法获取房间号');
+                    }
+                } else {
+                    // 处理HTTP请求错误
+                    alert('入住失败，服务器错误');
+                }
+            };
+
+            // 处理网络错误
+            xhr.onerror = function () {
+                alert('入住失败，网络错误');
+            };
+
+            // 发送请求，将bookno作为JSON字符串发送到后端
+            var requestData = JSON.stringify({ bookno: bookno });
+            xhr.send(requestData);
         }
 
-        function confirmCheckIn(reservationTime) {
-            // 模拟向后端请求获取房间号的过程
-            const roomNumber = "A101"; // 这里应该是后端返回的房间号
-
-            // 更新界面显示
-            alert(`确认入住成功，房间号：${roomNumber}`);
-        }
     </script>
 
 </body>

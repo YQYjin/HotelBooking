@@ -9,7 +9,7 @@
 <body>
 
     <header>
-        <h1 id="username">当前用户：ckj</h1>
+        <h1 id="username">当前雇员：</h1>
     </header>
     
     <nav>
@@ -25,6 +25,12 @@
     </section>
     
     <script>
+        // Load the username from localStorage
+        var storedUsername = localStorage.getItem('username');
+        // Set the initial username in the header
+        document.getElementById('username').textContent = '当前雇员：' + (storedUsername || '未登录');
+
+        
         function loadPage(page) {
             var contentFrame = document.getElementById('contentFrame');
             var usernameElement = document.getElementById('username');

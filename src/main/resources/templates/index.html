@@ -10,22 +10,21 @@
     <main id="mainLogin" class="main-content c2191">
       <div class="bg-white rounded shadow-7 w-400 mw-100 p-6 mx-auto">
         <h5 class="mb-7">用户登录</h5>
-        <form>
+        <form id="loginForm">
           <div class="form-group">
             <input type="text" name="username" placeholder="用户名" class="form-control"/>
           </div>
           <div class="form-group">
             <input type="password" name="password" placeholder="密码" class="form-control"/>
           </div>
-
           <div class="form-group">
-            <button type="submit" class="btn btn-block btn-primary">登录</button>
+            <button type="button" onclick="user_login()" class="btn btn-block btn-primary">登录</button>
           </div>
         </form>
         <div class="divider">其他用户登录</div>
         <div class="text-center">
-          <a href="#" title="Employee" class="btn btn-circle btn-sm btn-employee mr-2">雇员登录</a>
-          <a href="#" title="Administrator" class="btn btn-circle btn-sm btn-administrators mr-2">管理员登录</a>
+          <a href="employee_sign.html" title="Employee" class="btn btn-circle btn-sm btn-employee mr-2">雇员登录</a>
+          <a href="administrators_sign.html" title="Administrator" class="btn btn-circle btn-sm btn-administrators mr-2">管理员登录</a>
         </div>
         <hr class="w-30"/>
         <p class="text-center text-muted small-2">还没有账号？ 
@@ -35,5 +34,41 @@
     </main>
     <!-- /.main-content -->
   </div>
-  <!-- Scripts -->
+
+  <script>
+    function user_login() {
+      var form = document.getElementById('loginForm');
+      var username = form.elements['username'].value;
+      var password = form.elements['password'].value;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'user_login', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            var response = xhr.responseText;
+
+            if (response === 'true') {
+              //将用户名保存到本地存储
+              localStorage.setItem('username', username);
+              // 登录成功，跳转到其他界面
+              window.location.href = 'user_home.html';
+            } else {
+              // 登录失败，弹窗提示
+              alert('登录失败，请检查用户名和密码');
+            }
+          } else {
+            // 发生错误时的处理
+            alert('发生错误，请稍后再试');
+          }
+        }
+      };
+
+      // 将用户名和密码发送到后端
+      var data = 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
+      xhr.send(data);
+    }
+  </script>
 </body>

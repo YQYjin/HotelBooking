@@ -26,11 +26,38 @@
 </form>
 
 <script>
+    var username = localStorage.getItem('username');
     function applyBooking() {
-        // 在这里添加JavaScript代码来处理用户选择和触发预定逻辑
-        alert('预订申请已提交！');
-        // 这里可以将表单数据提交到后端进行处理
-        // 例如，使用AJAX将数据发送到服务器，并根据服务器的响应显示适当的消息
+        var checkInDate = document.getElementById('checkInDate').value;
+        var bookingType = document.getElementById('bookingType').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/booking', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        alert('预订申请已提交！');
+                    } else {
+                        alert('预订失败，请重试！');
+                    }
+                } else {
+                    console.error('Error:', xhr.statusText);
+                    alert('发生错误，请稍后重试！');
+                }
+            }
+        };
+
+        var data = JSON.stringify({
+            username: username,
+            checkInDate: checkInDate,
+            bookingType: bookingType
+        });
+
+        xhr.send(data);
     }
 </script>
 
