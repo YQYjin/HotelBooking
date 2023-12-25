@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报表生成</title>
+    <link rel="stylesheet" href="administrators.css">
+</head>
+<body>
+    <h1>报表生成</h1>
+    
+    <label for="start_date">开始日期:</label>
+    <input type="date" id="start_date">
+
+    <label for="end_date">结束日期:</label>
+    <input type="date" id="end_date">
+
+    <button onclick="generateRewardReport()">打印奖励报表</button>
+    <button onclick="generateIncomeReport()">打印预计房间收入报表</button>
+    <button onclick="generateBookingReport()">打印预计入住报表</button>
+
+    <div id="report_output"></div>
+
+    <script>
+        function generateRewardReport() {
+            const startDate = document.getElementById("start_date").value;
+            const endDate = document.getElementById("end_date").value;
+
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求，使用POST方法发送数据
+            xhr.open("POST", "/getrewardreport", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // 处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 请求成功，解析后端返回的JSON数据
+                        const backendData = JSON.parse(xhr.responseText);
+
+                        // 调用displayReport函数展示报表
+                        displayReport(backendData, "奖励报表");
+                    } else {
+                        // 请求失败，弹窗显示获取报表失败
+                        alert("获取报表失败");
+                    }
+                }
+            };
+
+            // 发送JSON格式的开始和结束时间
+            const requestData = {
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            // 发送请求
+            xhr.send(JSON.stringify(requestData));
+        }
+
+    
+        function generateIncomeReport() {
+            const startDate = document.getElementById("start_date").value;
+            const endDate = document.getElementById("end_date").value;
+
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求，使用POST方法发送数据
+            xhr.open("POST", "/getincomereport", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // 处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 请求成功，解析后端返回的JSON数据
+                        const backendData = JSON.parse(xhr.responseText);
+
+                        // 调用displayReport函数展示报表
+                        displayReport(backendData, "预计房间收入报表");
+                    } else {
+                        // 请求失败，弹窗显示获取报表失败
+                        alert("获取报表失败");
+                    }
+                }
+            };
+
+            // 发送JSON格式的开始和结束时间
+            const requestData = {
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            // 发送请求
+            xhr.send(JSON.stringify(requestData));
+        }
+
+    
+        function generateBookingReport() {
+            const startDate = document.getElementById("start_date").value;
+            const endDate = document.getElementById("end_date").value;
+
+            // 创建XMLHttpRequest对象
+            const xhr = new XMLHttpRequest();
+
+            // 配置请求，使用POST方法发送数据
+            xhr.open("POST", "/getcheckinreport", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // 处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 请求成功，解析后端返回的JSON数据
+                        const backendData = JSON.parse(xhr.responseText);
+
+                        // 调用displayReport函数展示报表
+                        displayReport(backendData, "预计入住报表");
+                    } else {
+                        // 请求失败，弹窗显示获取报表失败
+                        alert("获取报表失败");
+                    }
+                }
+            };
+
+            // 发送JSON格式的开始和结束时间
+            const requestData = {
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            // 发送请求
+            xhr.send(JSON.stringify(requestData));
+        }
+
+    
+        function displayReport(data, reportType) {
+            const reportOutput = document.getElementById("report_output");
+            reportOutput.innerHTML = ""; // 清空之前的内容
+    
+            if (data.length === 0) {
+                reportOutput.innerHTML = "<p>没有数据可显示</p>";
+                return;
+            }
+    
+            const table = document.createElement("table");
+    
+            // 创建表头
+            const headerRow = table.insertRow(0);
+            const headerMapping = {
+                date: "日期",
+                rewardDiscount: "奖励折扣",
+                expectedIncome: "预计收入",
+                prepayment: "预付金预定",
+                prepayment60: "提前60天预定",
+                regularBooking: "常规预订",
+                rewardBooking: "奖励预订",
+                totalRooms: "总房间数",
+            };
+    
+            for (const key in data[0]) {
+                const th = document.createElement("th");
+                th.textContent = headerMapping[key];
+                headerRow.appendChild(th);
+            }
+    
+            // 创建表格内容
+            for (let i = 0; i < data.length; i++) {
+                const row = table.insertRow(i + 1);
+                for (const key in data[i]) {
+                    const cell = row.insertCell();
+                    cell.textContent = data[i][key];
+                }
+            }
+    
+            // 添加总计行
+            const totalRow = table.insertRow(data.length + 1);
+            const totalCell = totalRow.insertCell();
+            totalCell.textContent = "总计";
+    
+            // 计算总计
+            let total = 0;
+            for (let i = 0; i < data.length; i++) {
+                total += parseFloat(data[i].totalRooms || data[i].expectedIncome || data[i].rewardDiscount || 0);
+            }
+    
+            // 添加总计值到表格
+            const totalValueCell = totalRow.insertCell();
+            totalValueCell.textContent = total;
+    
+            // 添加平均值行
+            const averageRow = table.insertRow(data.length + 2);
+            const averageCell = averageRow.insertCell();
+            averageCell.textContent = "平均值";
+    
+            // 添加平均值值到表格
+            const averageValueCell = averageRow.insertCell();
+            averageValueCell.textContent = (total / data.length).toFixed(2);
+    
+            // 添加表格到报表输出区域
+            reportOutput.appendChild(table);
+        }
+    </script>
+    
+</body>
+</html>

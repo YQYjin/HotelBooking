@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酒店预定系统</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+    <header>
+        <h1 id="username">当前管理员：</h1>
+    </header>
+    
+    <nav>
+        <a href="#" onclick="loadPage('administrators_html/price_adjustment.html')">基价调整</a>
+        <a href="#" onclick="loadPage('administrators_html/print_report.html')">打印报表</a>
+        <a href="#" onclick="backupData()">备份数据</a>
+        <a href="#" onclick="logout()">退出登录</a>
+    </nav>
+    
+    <section id="content">
+        <iframe id="contentFrame" src="" frameborder="0"></iframe>
+    </section>
+    
+    <script>
+        // Load the username from localStorage
+        var storedUsername = localStorage.getItem('username');
+        // Set the initial username in the header
+        document.getElementById('username').textContent = '当前管理员：' + (storedUsername || '未登录');
+
+        
+        function loadPage(page) {
+            var contentFrame = document.getElementById('contentFrame');
+            var usernameElement = document.getElementById('username');
+    
+            try {
+                contentFrame.src = page;
+            } catch (error) {
+                console.error(error);
+                // 在实际应用中，你可能需要在页面上显示一个错误消息，以提醒用户加载失败
+            }
+        }
+        
+        function backupData() {
+            // 创建XMLHttpRequest对象
+            var xhr = new XMLHttpRequest();
+
+            // 配置Ajax请求
+            xhr.open("GET", "backup", true);
+
+            // 设置请求完成后的回调函数
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // 请求成功
+                        var response = JSON.parse(xhr.responseText);
+
+                        if (response.success) {
+                            // 后端返回true，备份成功
+                            alert("备份成功！");
+                        } else {
+                            // 后端返回false，备份失败
+                            alert("备份失败，请重试！");
+                        }
+                    } else {
+                        // 请求失败
+                        alert("备份请求失败，请检查网络或重试！");
+                    }
+                }
+            };
+
+            // 发送Ajax请求
+            xhr.send();
+        }
+
+
+        function logout() {
+            // Redirect to the index.html page (adjust the path accordingly)
+            window.location.href = 'index.html';
+        }
+    </script>
+    
+</body>
+</html>

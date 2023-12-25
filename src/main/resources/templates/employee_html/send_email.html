@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息查询</title>
+    <link rel="stylesheet" href="employee.css">
+</head>
+<body>
+
+    <h1>用户信息查询</h1>
+
+    <label for="userId">用户名：</label>
+    <input type="text" id="userId" placeholder="输入用户名">
+
+    <button onclick="getUserInfo()">获取用户邮箱</button>
+
+    <div id="result"></div>
+
+    <form id="emailForm" style="display:none;">
+        <label for="emailSubject">主题：</label>
+        <input type="text" id="emailSubject" placeholder="输入邮件主题">
+
+        <label for="emailBody">邮件内容：</label>
+        <textarea id="emailBody" placeholder="输入邮件内容"></textarea>
+
+        <button onclick="sendEmail()">发送邮件</button>
+        <p id="statusMessage"></p>
+    </form>
+
+    <script>
+        function getUserInfo() {
+            // 获取用户输入的ID
+            var username = document.getElementById('userId').value;
+
+            // 创建XMLHttpRequest对象
+            var xhr = new XMLHttpRequest();
+
+            // 设置请求方法和URL
+            xhr.open('GET', 'getemail?username=' + encodeURIComponent(username), true);
+
+            // 设置回调函数，处理响应
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // 解析JSON响应
+                    var response = JSON.parse(xhr.responseText);
+                    // 更新userData对象的email属性
+                    var userEmail = response.email;
+                    
+                    var resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = '用户 ' + username + ' 的邮箱是：' + userEmail;
+
+                    // 显示发送邮件表单
+                    var emailForm = document.getElementById('emailForm');
+                    emailForm.style.display = 'block';
+
+                    // 保存邮箱信息
+                    emailForm.dataset.email = userEmail;
+                }else {
+                    // 后端返回失败信息
+                    alert('邮箱获取失败，请重试。');
+                }
+            };
+
+            // 发送请求
+            xhr.send();
+        }
+
+        function sendEmail() {
+            alert('发送成功');
+        }
+
+        
+    </script>
+
+</body>
+</html>

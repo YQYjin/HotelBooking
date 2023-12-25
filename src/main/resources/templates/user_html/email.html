@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="subpage.css">
+    <title>User Profile</title>
+</head>
+<body>
+
+<div>
+    <h2>我的邮箱</h2>
+    <div id="user-email-container">
+        <p id="user-email">我的email: <span id="email-value"></span></p>
+        <button onclick="editEmail()">修改邮箱</button>
+    </div>
+    <div id="edit-email-container" style="display:none;">
+        <input type="email" id="new-email" placeholder="输入新的邮箱">
+        <button onclick="updateEmail()">更新邮箱</button>
+        <button onclick="cancelEdit()">取消</button>
+    </div>
+    
+</div>
+
+<script>
+    var username = localStorage.getItem('username');
+    
+    var userData = {
+        email: "null"
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        getUserEmail();
+    });
+
+    function getUserEmail() {
+        // 创建XMLHttpRequest对象
+        var xhr = new XMLHttpRequest();
+
+        // 设置请求方法和URL
+        xhr.open('GET', 'getemail?username=' + encodeURIComponent(username), true);
+
+        // 设置回调函数，处理响应
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // 解析JSON响应
+                var response = JSON.parse(xhr.responseText);
+                // 更新userData对象的email属性
+                userData.email = response.email;
+                // 调用显示邮箱的函数
+                displayUserEmail(userData.email);
+            }
+        };
+
+        // 发送请求
+        xhr.send();
+    }
+
+    function displayUserEmail(email) {
+        var emailContainer = document.getElementById('email-value');
+        emailContainer.textContent = email;
+
+        var userContainer = document.getElementById('user-email-container');
+        var editContainer = document.getElementById('edit-email-container');
+        
+        if (email) {
+            userContainer.style.display = 'block';
+            editContainer.style.display = 'none';
+            addContainer.style.display = 'none';
+        } else {
+            userContainer.style.display = 'none';
+            editContainer.style.display = 'none';
+            addContainer.style.display = 'block';
+        }
+    }
+
+    function editEmail() {
+        var userContainer = document.getElementById('user-email-container');
+        var editContainer = document.getElementById('edit-email-container');
+
+        userContainer.style.display = 'none';
+        editContainer.style.display = 'block';
+    }
+
+    function updateEmail() {
+        var newEmail = document.getElementById('new-email').value;
+
+        // 创建XMLHttpRequest对象
+        var xhr = new XMLHttpRequest();
+
+        // 设置请求方法和URL
+        xhr.open('POST', 'updateemail', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // 设置回调函数，处理响应
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // 解析JSON响应
+                    var response = JSON.parse(xhr.responseText);
+                    
+                    if (response.success) {
+                        alert('邮箱修改成功');
+                        getUserEmail(); // 重新调用显示邮箱的函数
+                    } else {
+                        alert('邮箱修改失败');
+                    }
+                } else {
+                    alert('请求失败');
+                }
+            }
+        };
+
+        // 构造发送的数据
+        var data = {
+            username: username,
+            newEmail: newEmail
+        };
+
+        // 发送请求，将数据转换为 JSON 格式发送
+        xhr.send(JSON.stringify(data));
+    }
+
+
+    function cancelEdit() {
+        var userContainer = document.getElementById('user-email-container');
+        var editContainer = document.getElementById('edit-email-container');
+
+        userContainer.style.display = 'block';
+        editContainer.style.display = 'none';
+    }
+
+</script>
+
+</body>
+</html>
