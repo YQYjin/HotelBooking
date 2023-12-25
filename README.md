@@ -26,3 +26,17 @@
 7. show_booking
 8. getprice
 9. backup
+
+# 数据库更新
+- bookings表添加了
+  ```
+    roomno int,
+    base_price decimal(10,2),
+    total_price decimal(10,2)
+  ```
+- 添加了rooms表
+  ```sql
+  create table rooms(
+	id INT primary KEY auto_increment,
+    status tinyint);
+  ```
