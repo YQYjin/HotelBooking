@@ -22,6 +22,7 @@ public class PrepayBookingService extends BookingsService{
         // TODO: 计算总价
         double totalPrice=calculateTotalPrice(basePrice);
         bookings.setTotalPrice(totalPrice);
+        bookings.setTime(getTime());
         bookingsMapper.insert(bookings);
         return "true";
     }

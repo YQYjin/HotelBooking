@@ -15,5 +15,6 @@ public class Bookings {
     private int status;
     private String startDate;
     private String endDate;
+    private String time;
 
 }
