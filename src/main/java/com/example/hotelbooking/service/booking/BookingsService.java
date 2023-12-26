@@ -1,6 +1,7 @@
 package com.example.hotelbooking.service.booking;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.hotelbooking.bean.Bookings;
 import com.example.hotelbooking.bean.Rooms;
 import com.example.hotelbooking.mapper.BookingsMapper;
@@ -63,5 +64,17 @@ public class BookingsService {
         // 将当前日期格式化为字符串
         String currentDateAsString = currentDate.format(formatter);
         return currentDateAsString;
+    }
+    public List<Bookings> getBookings(String username)
+    {
+        QueryWrapper<Bookings> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        return bookingsMapper.selectList(queryWrapper);
+    }
+    public List<Bookings> showBookings(String date){
+        QueryWrapper<Bookings> queryWrapper=new QueryWrapper<>();
+        queryWrapper.like("time",date+"%");
+        List<Bookings> bookings = bookingsMapper.selectList(queryWrapper);
+        return bookings;
     }
 }
