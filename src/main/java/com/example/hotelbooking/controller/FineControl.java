@@ -12,10 +12,16 @@ public class FineControl {
     @Resource
     private FineService fineService;
 
-    @PostMapping("/generateticket")
+    @PostMapping("/getticket")
     // 获取罚单
     public Fine getTicket(String username){
         Fine response=fineService.getTicket(username);
+        return response;
+    }
+    // 生成罚单
+    @PostMapping("/generateticket")
+    public String generateTicker(String username,String reason,String finePrice){
+        String response=fineService.GenerateTicket(username, reason, finePrice);
         return response;
     }
 }
