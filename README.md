@@ -40,3 +40,4 @@
 	id INT primary KEY auto_increment,
     status tinyint);
   ```
+cynlogin 除了payment其他全部完成

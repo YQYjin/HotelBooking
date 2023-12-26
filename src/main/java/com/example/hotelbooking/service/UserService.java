@@ -25,4 +25,15 @@ public class UserService {
         userMapper.insert(user);
         return "true";
     }
+    public String userLogin(String username ,String password)
+    {
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        queryWrapper.eq("password",password);
+        User user1=userMapper.selectOne(queryWrapper);
+        if(user1 !=null){
+            return "true";
+        }
+        else return "false";
+    }
 }
