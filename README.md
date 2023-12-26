@@ -20,9 +20,9 @@
 1. user_login
 2. employee_login
 3. administrators_login
-4. payment
-5. getemail
+4. payment 
+5. getemail  
 6. getbookings
 7. show_booking
-8. getprice
+8. getprice : 完成
 9. backup

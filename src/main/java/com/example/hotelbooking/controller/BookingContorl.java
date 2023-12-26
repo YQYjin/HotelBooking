@@ -21,18 +21,18 @@ public class BookingContorl {
 
     @PostMapping("/booking")
     // 预订
-    public String booking(String username,String checkInDate,String bookingType){
+    public String booking(String username,String bookingType,String startDate,String endDate,String creditno){
         if(bookingType.equals("1")){
-            String response=prepayBookingService.makeBooking(username,checkInDate);
+            String response=prepayBookingService.makeBooking(username,startDate,endDate,creditno);
             return response;
         } else if (bookingType.equals("2")) {
-            String response=advanceBookingService.makeBooking(username,checkInDate);
+            String response=advanceBookingService.makeBooking(username,startDate,endDate,creditno);
             return response;
         } else if (bookingType.equals("3")) {
-            String response=standardBookingService.makeBooking(username,checkInDate);
+            String response=standardBookingService.makeBooking(username,startDate,endDate,creditno);
             return response;
         } else if (bookingType.equals("4")) {
-            String response=rewardBookingService.makeBooking(username,checkInDate);
+            String response=rewardBookingService.makeBooking(username,startDate,endDate,creditno);
             return response;
         } else {
             return "false";
@@ -43,6 +43,13 @@ public class BookingContorl {
     // 取消预订
     public String cancelBooking(String bookingNo){
         String response=bookingsService.cancelBooking(bookingNo);
+        return response;
+    }
+
+    @PostMapping("/delete_booking")
+    // 删除预订
+    public String deleteBooking(String bookno){
+        String response=bookingsService.deleteBooking(bookno);
         return response;
     }
 }

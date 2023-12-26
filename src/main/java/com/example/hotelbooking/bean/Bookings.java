@@ -8,6 +8,12 @@ public class Bookings {
     @TableId(value = "bookno")
     private int bookno;
     private String username;
-    private String time;
     private String type;
+    private int roomno;
+    private double basePrice;
+    private double totalPrice;
+    private int status;
+    private String startDate;
+    private String endDate;
+
 }

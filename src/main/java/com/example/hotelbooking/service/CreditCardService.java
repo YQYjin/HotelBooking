@@ -40,4 +40,16 @@ public class CreditCardService {
         creditCardMapper.delete(queryWrapper);
         return "true";
     }
+    // 检验信用卡
+    public Boolean check(String username,String creditno){
+        QueryWrapper<Credit_card> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        queryWrapper.eq("card_number", creditno);
+        Credit_card credit_cards=creditCardMapper.selectOne(queryWrapper);
+        if(credit_cards==null){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

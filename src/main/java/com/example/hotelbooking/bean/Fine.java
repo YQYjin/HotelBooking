@@ -9,5 +9,5 @@ public class Fine {
     @TableField("user")
     private String username;
     private String reason;
-    private Double fine;
+    private double fine;
 }
