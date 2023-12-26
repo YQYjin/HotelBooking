@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public class BookingsService {
     @Resource
     protected BasePriceService basePriceService;
     // 预订,会被子类重写
-    public String makeBooking(String username, String startTime,String endTime,String creditno){
+    public String makeBooking(String username, String startTime,String endTime,String creditno) throws ParseException {
         return "false";
     }
     // 取消预订

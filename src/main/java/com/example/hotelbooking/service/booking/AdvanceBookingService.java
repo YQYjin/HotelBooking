@@ -22,5 +22,9 @@ public class AdvanceBookingService extends BookingsService{
         bookingsMapper.insert(bookings);
         return "true";
     }
+    //计算总价
+    private double calculateTotalPrice(double basePrice){
+        return basePrice*0.85;
+    }
 }
 

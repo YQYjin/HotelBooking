@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 
 @RestController
 public class BookingContorl {
@@ -21,7 +22,7 @@ public class BookingContorl {
 
     @PostMapping("/booking")
     // 预订
-    public String booking(String username,String bookingType,String startDate,String endDate,String creditno){
+    public String booking(String username,String bookingType,String startDate,String endDate,String creditno) throws ParseException {
         if(bookingType.equals("1")){
             String response=prepayBookingService.makeBooking(username,startDate,endDate,creditno);
             return response;
