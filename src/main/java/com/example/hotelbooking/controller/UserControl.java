@@ -17,4 +17,20 @@ public class UserControl {
         String response=userService.registerUser(username,password,accountType);
         return response;
     }
+    @PostMapping("/user_login")
+    public String userLogin(String username, String password){
+        String response=userService.userLogin(username,password);
+        return response;
+    }
+    @PostMapping("/employee_login")
+    public String staffLogin(String username, String password){
+        String response=userService.userLogin(username,password);
+        return response;
+    }
+    @PostMapping("/administrators_login")
+    public String adminLogin(String username, String password){
+        String response=userService.userLogin(username,password);
+        return response;
+    }
+
 }

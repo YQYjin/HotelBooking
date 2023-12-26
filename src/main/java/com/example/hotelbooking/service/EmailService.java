@@ -28,4 +28,10 @@ public class EmailService {
         }
         return "true";
     }
+    public Email getEmail(String username){
+        QueryWrapper<Email> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        Email email=emailMapper.selectOne(queryWrapper);
+        return email;
+    }
 }
