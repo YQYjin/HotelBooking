@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 public class CheckoutControl {
     @Resource
     private CheckoutService checkoutService;
-    CheckoutService checkoutService;
     @PostMapping("/checkoutroom")
     public String checkOut(String bookno) {
         String response = checkoutService.checkOut(bookno);

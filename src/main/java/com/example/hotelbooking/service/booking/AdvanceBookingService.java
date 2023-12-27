@@ -1,7 +1,9 @@
 package com.example.hotelbooking.service.booking;
 
 import com.example.hotelbooking.bean.Bookings;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AdvanceBookingService extends BookingsService{
     private final String type="提前60天预订";
     @Override

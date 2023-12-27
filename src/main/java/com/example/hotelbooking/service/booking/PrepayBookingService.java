@@ -2,7 +2,9 @@ package com.example.hotelbooking.service.booking;
 
 import com.example.hotelbooking.bean.Bookings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PrepayBookingService extends BookingsService{
     private final String type="预付金预定";
 

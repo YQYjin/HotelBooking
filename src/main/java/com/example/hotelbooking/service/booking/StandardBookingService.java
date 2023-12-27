@@ -1,7 +1,9 @@
 package com.example.hotelbooking.service.booking;
 
 import com.example.hotelbooking.bean.Bookings;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StandardBookingService extends BookingsService{
     private final String type="常规预订";
     @Override
