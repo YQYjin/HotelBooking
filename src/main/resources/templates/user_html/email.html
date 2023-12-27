@@ -27,7 +27,7 @@
     var username = localStorage.getItem('username');
     
     var userData = {
-        email: "null"
+        email: "暂无邮箱，点击修改添加"
     };
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -68,11 +68,9 @@
         if (email) {
             userContainer.style.display = 'block';
             editContainer.style.display = 'none';
-            addContainer.style.display = 'none';
         } else {
             userContainer.style.display = 'none';
             editContainer.style.display = 'none';
-            addContainer.style.display = 'block';
         }
     }
 
@@ -89,9 +87,10 @@
 
         // 创建XMLHttpRequest对象
         var xhr = new XMLHttpRequest();
-
+        // 构造 URL，将参数拼接到 URL 中
+        var url = 'updateemail?username=' + encodeURIComponent(username) + '&newEmail=' + encodeURIComponent(newEmail);
         // 设置请求方法和URL
-        xhr.open('POST', 'updateemail', true);
+        xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         // 设置回调函数，处理响应
@@ -99,8 +98,8 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     // 解析JSON响应
-                    var response =  xhr.responseText;
-                    
+                    var response = xhr.responseText;
+
                     if (response == 'true') {
                         alert('邮箱修改成功');
                         getUserEmail(); // 重新调用显示邮箱的函数
@@ -113,15 +112,10 @@
             }
         };
 
-        // 构造发送的数据
-        var data = {
-            username: username,
-            newEmail: newEmail
-        };
-
-        // 发送请求，将数据转换为 JSON 格式发送
-        xhr.send(JSON.stringify(data));
+        // 发送请求，不再需要发送 JSON 数据
+        xhr.send();
     }
+
 
 
     function cancelEdit() {

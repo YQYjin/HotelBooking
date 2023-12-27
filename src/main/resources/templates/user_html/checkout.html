@@ -33,56 +33,63 @@
         var username = localStorage.getItem('username');
 
         // 从后端获取订单和罚单信息的函数
+        // 从后端获取订单和罚单信息的函数，返回一个 Promise
         function getPaymentInfo() {
-            // 创建一个新的XMLHttpRequest对象
-            var xhr = new XMLHttpRequest();
+            return new Promise(function (resolve, reject) {
+                // 创建一个新的XMLHttpRequest对象
+                var xhr = new XMLHttpRequest();
 
-            // 配置请求
-            xhr.open('GET', '/payment?username=' + encodeURIComponent(username), true);
+                // 配置请求
+                xhr.open('GET', '/payment?username=' + encodeURIComponent(username), true);
 
-            // 设置回调函数，处理请求完成时的操作
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        // 解析从后端获取的 JSON 数据
-                        var data = JSON.parse(xhr.responseText);
-                        console.log(data);
-                        return data;
-                    } else {
-                        // 处理请求错误
-                        console.error('Error fetching data from the server.');
+                // 设置回调函数，处理请求完成时的操作
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            // 解析从后端获取的 JSON 数据
+                            var data = JSON.parse(xhr.responseText);
+                            // 将数据传递给 resolve
+                            resolve(data);
+                        } else {
+                            // 处理请求错误，将错误传递给 reject
+                            reject('Error fetching data from the server.');
+                        }
                     }
-                }
-            };
+                };
 
-            // 发送请求
-            xhr.send();
+                // 发送请求
+                xhr.send();
+            });
         }
 
-        function getPunishInfo() {
-            // 创建一个新的XMLHttpRequest对象
-            var xhr = new XMLHttpRequest();
+        // 从后端获取罚单信息的函数，返回一个 Promise
+        function getPunishInfo(username) {
+            return new Promise(function (resolve, reject) {
+                // 创建一个新的XMLHttpRequest对象
+                var xhr = new XMLHttpRequest();
 
-            // 配置请求
-            xhr.open('GET', '/punish?username=' + encodeURIComponent(username), true);
+                // 配置请求
+                xhr.open('GET', '/punish?username=' + encodeURIComponent(username), true);
 
-            // 设置回调函数，处理请求完成时的操作
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        // 解析从后端获取的 JSON 数据
-                        var data = JSON.parse(xhr.responseText);
-                        console.log(data);
-                        return data;
-                    } else {
-                        // 处理请求错误
-                        console.error('Error fetching data from the server.');
+                // 设置回调函数，处理请求完成时的操作
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            // 解析从后端获取的 JSON 数据
+                            var data = JSON.parse(xhr.responseText); // 解析 JSON 数据
+                            // 后端返回的数据格式如下{"id":1,"username":"ckj","reason":"未登记预定","fine":600.0}
+                            // 将数据传递给 resolve
+                            resolve(data);
+                        } else {
+                            // 处理请求错误，将错误传递给 reject
+                            reject('从服务器获取数据时发生错误。');
+                        }
                     }
-                }
-            };
+                };
 
-            // 发送请求
-            xhr.send();
+                // 发送请求
+                xhr.send();
+            });
         }
 
 
@@ -95,12 +102,15 @@
             const timeCheckoutElement = document.getElementById('timeCheckout');
             const checkoutAmountElement = document.getElementById('checkoutAmount');
 
-            const receiptInfo = getPaymentInfo();
-            
-            userCheckoutElement.textContent = receiptInfo.user;
-            hotelCheckoutElement.textContent = receiptInfo.hotel;
-            timeCheckoutElement.textContent = receiptInfo.time;
-            checkoutAmountElement.textContent = parseFloat(receiptInfo.amount).toFixed(2);
+            // 调用异步函数
+            getPaymentInfo().then(function (receiptInfo) {
+                userCheckoutElement.textContent = receiptInfo.user;
+                hotelCheckoutElement.textContent = receiptInfo.hotel;
+                timeCheckoutElement.textContent = receiptInfo.time;
+                checkoutAmountElement.textContent = parseFloat(receiptInfo.amount).toFixed(2);
+            }).catch(function (error) {
+                console.error(error);
+            });
         }
 
         // 更新罚款信息
@@ -109,42 +119,59 @@
             const reasonFineElement = document.getElementById('reasonFine');
             const fineAmountElement = document.getElementById('fineAmount');
 
-            const receiptInfo = getPunishInfo();
-            
-            userFineElement.textContent = receiptInfo.user;
-            reasonFineElement.textContent = receiptInfo.reason;
-            fineAmountElement.textContent = parseFloat(receiptInfo.amount).toFixed(2);
+            // 调用异步函数
+            getPunishInfo(username).then(function (receiptInfo) {
+                userFineElement.textContent = receiptInfo.username; // 修复此处应该使用 username 而不是 user
+                reasonFineElement.textContent = receiptInfo.reason;
+                fineAmountElement.textContent = parseFloat(receiptInfo.fine).toFixed(2); // 修复此处应该使用 fine 而不是 amount
+            }).catch(function (error) {
+                console.error(error);
+            });
         }
-
         // 结账按钮点击事件
         function confirmCheckout() {
-            const receiptInfo = getReceiptInfo().checkout;
-            const confirmCheckout = confirm(`是否确认结账？\n\n用户: ${receiptInfo.user}\n酒店: ${receiptInfo.hotel}\n时间: ${receiptInfo.time}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
+            // 调用异步函数，等待 Promise 解决
+            getPaymentInfo().then(function (receiptInfo) {
+                const confirmCheckout = confirm(`是否确认结账？\n\n用户: ${receiptInfo.user}\n酒店: ${receiptInfo.hotel}\n时间: ${receiptInfo.time}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
 
-            if (confirmCheckout) {
-                const printReceipt = confirm('结账成功！是否要打印票据？');
-                if (printReceipt) {
-                    printReceiptDetails(receiptInfo);
+                if (confirmCheckout) {
+                    const printReceipt = confirm('结账成功！是否要打印票据？');
+                    if (printReceipt) {
+                        printpaymentDetails(receiptInfo);
+                    }
                 }
-            }
+            }).catch(function (error) {
+                console.error(error);
+            });
         }
+
 
         // 交罚款按钮点击事件
         function payFine() {
-            const receiptInfo = getReceiptInfo().fine;
-            const confirmFine = confirm(`是否确认交罚款？\n\n用户: ${receiptInfo.user}\n原因: ${receiptInfo.reason}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
+            // 传入 username 参数
+            getPunishInfo(username).then(function (punishInfo) {
+                const confirmFine = confirm(`是否确认交罚款？\n\n用户: ${punishInfo.username}\n原因: ${punishInfo.reason}\n费用: ￥${parseFloat(punishInfo.fine).toFixed(2)}`);
 
-            if (confirmFine) {
-                const printReceipt = confirm('罚款支付成功！是否要打印票据？');
-                if (printReceipt) {
-                    printReceiptDetails(receiptInfo);
+                if (confirmFine) {
+                    const printReceipt = confirm('罚款支付成功！是否要打印票据？');
+                    if (printReceipt) {
+                        printpunishDetails(punishInfo);
+                    }
                 }
-            }
+            }).catch(function (error) {
+                console.error(error);
+            });
         }
 
+
+
         // 打印票据详情
-        function printReceiptDetails(receiptInfo) {
-            alert(`打印票据成功！\n\n用户: ${receiptInfo.user}\n酒店: ${receiptInfo.hotel || 'N/A'}\n时间: ${receiptInfo.time || 'N/A'}\n原因: ${receiptInfo.reason || 'N/A'}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
+        function printpaymentDetails(receiptInfo) {
+            alert(`打印票据成功！\n\n用户: ${receiptInfo.user}\n酒店: ${receiptInfo.hotel || 'N/A'}\n时间: ${receiptInfo.time || 'N/A'}\n费用: ￥${parseFloat(receiptInfo.amount).toFixed(2)}`);
+        }
+
+        function printpunishDetails(receiptInfo) {
+            alert(`打印票据成功！\n\n用户: ${receiptInfo.username}\n原因: ${receiptInfo.reason || 'N/A'}\n费用: ￥${parseFloat(receiptInfo.fine).toFixed(2)}`);
         }
 
         // 页面加载时更新费用

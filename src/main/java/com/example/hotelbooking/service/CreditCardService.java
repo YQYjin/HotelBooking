@@ -36,7 +36,7 @@ public class CreditCardService {
     public String deleteCreditCard(String username,String cardNumber){
         QueryWrapper<Credit_card> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
-        queryWrapper.eq("cardNumber", cardNumber);
+        queryWrapper.eq("card_number", cardNumber);
         creditCardMapper.delete(queryWrapper);
         return "true";
     }
