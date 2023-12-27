@@ -2,10 +2,12 @@ package com.example.hotelbooking.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.hotelbooking.bean.Bookings;
+import com.example.hotelbooking.bean.Check_out;
 import com.example.hotelbooking.bean.Checkin;
 import com.example.hotelbooking.bean.Fine;
 import com.example.hotelbooking.mapper.BookingsMapper;
 import com.example.hotelbooking.mapper.CheckinMapper;
+import com.example.hotelbooking.mapper.CheckoutMapper;
 import com.example.hotelbooking.mapper.FineMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +48,12 @@ public class FineService {
 //        Bookings booking=bookingsList.get(0);
 //        String type=booking.getType();
 //        if(type.equals("yufuj"))
+    }
+    public Fine getByUser(String username){
+        QueryWrapper<Fine> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user",username);
+        queryWrapper.orderByDesc("id");
+        Fine response=fineMapper.selectOne(queryWrapper);
+        return response;
     }
 }
