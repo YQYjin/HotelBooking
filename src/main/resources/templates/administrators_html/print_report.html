@@ -26,116 +26,82 @@
             const startDate = document.getElementById("start_date").value;
             const endDate = document.getElementById("end_date").value;
 
-            // 创建XMLHttpRequest对象
             const xhr = new XMLHttpRequest();
 
-            // 配置请求，使用POST方法发送数据
-            xhr.open("POST", "/getrewardreport", true);
+            // 将请求的 URL 修改为包含查询参数的形式
+            const url = "/getrewardreport?startDate=" + encodeURIComponent(startDate) + "&endDate=" + encodeURIComponent(endDate);
+            //alert(url);
+            xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
 
-            // 处理响应
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        // 请求成功，解析后端返回的JSON数据
                         const backendData = JSON.parse(xhr.responseText);
-
-                        // 调用displayReport函数展示报表
                         displayReport(backendData, "奖励报表");
                     } else {
-                        // 请求失败，弹窗显示获取报表失败
                         alert("获取报表失败");
                     }
                 }
             };
 
-            // 发送JSON格式的开始和结束时间
-            const requestData = {
-                startDate: startDate,
-                endDate: endDate
-            };
-
-            // 发送请求
-            xhr.send(JSON.stringify(requestData));
+            // 不再需要发送 JSON 格式的数据
+            xhr.send();
         }
 
-    
         function generateIncomeReport() {
             const startDate = document.getElementById("start_date").value;
             const endDate = document.getElementById("end_date").value;
 
-            // 创建XMLHttpRequest对象
             const xhr = new XMLHttpRequest();
 
-            // 配置请求，使用POST方法发送数据
-            xhr.open("POST", "/getincomereport", true);
+            const url = "/getincomereport?startDate=" + encodeURIComponent(startDate) + "&endDate=" + encodeURIComponent(endDate);
+
+            xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
 
-            // 处理响应
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        // 请求成功，解析后端返回的JSON数据
                         const backendData = JSON.parse(xhr.responseText);
-
-                        // 调用displayReport函数展示报表
                         displayReport(backendData, "预计房间收入报表");
                     } else {
-                        // 请求失败，弹窗显示获取报表失败
                         alert("获取报表失败");
                     }
                 }
             };
 
-            // 发送JSON格式的开始和结束时间
-            const requestData = {
-                startDate: startDate,
-                endDate: endDate
-            };
-
-            // 发送请求
-            xhr.send(JSON.stringify(requestData));
+            xhr.send();
         }
 
-    
         function generateBookingReport() {
             const startDate = document.getElementById("start_date").value;
             const endDate = document.getElementById("end_date").value;
 
-            // 创建XMLHttpRequest对象
             const xhr = new XMLHttpRequest();
 
-            // 配置请求，使用POST方法发送数据
-            xhr.open("POST", "/getcheckinreport", true);
+            const url = "/getcheckinreport?startDate=" + encodeURIComponent(startDate) + "&endDate=" + encodeURIComponent(endDate);
+
+            xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
 
-            // 处理响应
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        // 请求成功，解析后端返回的JSON数据
                         const backendData = JSON.parse(xhr.responseText);
-
-                        // 调用displayReport函数展示报表
+                        // alert(backendData);
                         displayReport(backendData, "预计入住报表");
                     } else {
-                        // 请求失败，弹窗显示获取报表失败
                         alert("获取报表失败");
                     }
                 }
             };
 
-            // 发送JSON格式的开始和结束时间
-            const requestData = {
-                startDate: startDate,
-                endDate: endDate
-            };
-
-            // 发送请求
-            xhr.send(JSON.stringify(requestData));
+            xhr.send();
         }
 
-    
+
+
         function displayReport(data, reportType) {
             const reportOutput = document.getElementById("report_output");
             reportOutput.innerHTML = ""; // 清空之前的内容
@@ -157,7 +123,7 @@
                 prepayment60: "提前60天预定",
                 regularBooking: "常规预订",
                 rewardBooking: "奖励预订",
-                totalRooms: "总房间数",
+                totalBooms: "总房间数",
             };
     
             for (const key in data[0]) {

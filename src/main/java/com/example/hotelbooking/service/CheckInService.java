@@ -27,7 +27,7 @@ public class CheckInService {
         // 获取房间号
         int roomNo=roomService.getRoom();
         if(roomNo==-1) {
-            return "false";
+            return "-1";
         }
         // 修改房间状态
         String result=roomService.changeRoomStatus(roomNo,1);
@@ -51,7 +51,8 @@ public class CheckInService {
         checkin.setCheckinTime(formattedDateTime);
         checkin.setDepartureDate(endDate);
         checkinMapper.insert(checkin);
-        return "true";
+
+        return String.valueOf(roomNo);
     }
 
 }

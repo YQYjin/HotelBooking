@@ -61,6 +61,7 @@ public class BookingContorl {
     @PostMapping("/delete_booking")
     // 删除预订
     public String deleteBooking(String bookno){
+        System.out.println(bookno);
         String response=bookingsService.deleteBooking(bookno);
         return response;
     }
@@ -70,6 +71,7 @@ public class BookingContorl {
     }
     @GetMapping("/show_booking")
     public List<Bookings> showBookings(String date){
+        System.out.println(date);
         return bookingsService.showBookings(date);
     }
 }

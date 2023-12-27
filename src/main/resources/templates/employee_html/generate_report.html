@@ -13,7 +13,7 @@
             var xhr = new XMLHttpRequest();
 
             // 设置请求方式和请求地址（假设后端接口地址为 '/backend/arrival-report'）
-            xhr.open('POST', '/arrival_report', true);
+            xhr.open('POST', '/arrival_report?date=' + encodeURIComponent(selectedDate), true);
 
             // 设置请求头
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -34,11 +34,9 @@
                 }
             };
 
-            // 构造请求体，将日期发送到后端
-            var requestData = { date: selectedDate };
-            xhr.send(JSON.stringify(requestData));
+            // 不再需要构造请求体，因为日期已经包含在URL中
+            xhr.send();
         }
-
 
         function generateCheckInReport() {
             // 获取用户输入的日期
@@ -48,7 +46,7 @@
             var xhr = new XMLHttpRequest();
 
             // 设置请求方式和请求地址（假设后端接口地址为 '/backend/checkin-report'）
-            xhr.open('POST', '/checkin_report', true);
+            xhr.open('POST', '/checkin_report?date=' + encodeURIComponent(selectedDate), true);
 
             // 设置请求头
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -69,10 +67,10 @@
                 }
             };
 
-            // 构造请求体，将日期发送到后端
-            var requestData = { date: selectedDate };
-            xhr.send(JSON.stringify(requestData));
+            // 不再需要构造请求体，因为日期已经包含在URL中
+            xhr.send();
         }
+
 
 
         function generateTable(data, tableId, reportType) {

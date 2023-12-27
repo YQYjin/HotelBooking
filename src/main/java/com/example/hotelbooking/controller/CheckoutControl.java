@@ -17,6 +17,7 @@ public class CheckoutControl {
     @PostMapping("/checkoutroom")
     public String checkOut(String bookno) {
         String response = checkoutService.checkOut(bookno);
+        // System.out.println(response);
         return response;
     }
     @GetMapping("/payment")

@@ -25,7 +25,7 @@
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    var currentPrice = JSON.parse(xhr.responseText).price;
+                    var currentPrice =xhr.responseText;
                     document.getElementById("currentPrice").innerText = currentPrice;
                 }
             };
@@ -36,14 +36,14 @@
         // 发送修改请求
         function modifyPrice(newPrice) {
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
                         var response = xhr.responseText;
-                        if (response=='true') {
+                        if (response == 'true') {
                             // 修改成功
-                            document.getElementById("result").innerText = "修改成功";
-                            getCurrentPrice(); // 刷新当前基价显示
+                            alert("基价修改成功！");
+                            location.reload(true); // 刷新当前基价显示
                         } else {
                             // 修改失败
                             document.getElementById("result").innerText = "修改失败";
@@ -55,12 +55,16 @@
                 }
             };
 
-            xhr.open("POST", "modify_price", true);
+            // 将新基价作为查询参数添加到URL
+            var url = "modify_price?newPrice=" + encodeURIComponent(newPrice);
+
+            xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-            // 将新基价发送到后端
-            xhr.send(JSON.stringify({ newPrice: newPrice }));
+            // 不再发送 JSON 数据，因为参数已经在 URL 中
+            xhr.send();
         }
+
     </script>
 </head>
 <body>

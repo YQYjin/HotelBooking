@@ -24,18 +24,21 @@ public class ReportControl {
     @Resource
     private RewardReportService rewardReportService;
     @PostMapping("/getrewardreport")
-    public List<Reward_report> getRewardReport(Date startDate, Date endDate)
+    public List<Reward_report> getRewardReport(String startDate, String endDate)
     {
         return rewardReportService.getRewardReport(startDate,endDate);
     }
     @PostMapping("/getincomereport")
-    public List<Income_report> getIncomeReport(Date startDate, Date endDate)
+    public List<Income_report> getIncomeReport(String startDate, String endDate)
     {
+
         return incomeReportService.getIncomeReport(startDate,endDate);
     }
     @PostMapping("/getcheckinreport")
-    public List<Checkin_report> getCheckinReport(Date startDate, Date endDate)
+    public List<Checkin_report> getCheckinReport(String startDate, String endDate)
     {
+        System.out.println(startDate);
+        System.out.println(endDate);
         return checkInReportService.getCheckinReport(startDate,endDate);
     }
 }

@@ -13,8 +13,8 @@
     </header>
     
     <nav>
-        <a href="#" onclick="loadPage('administrators_html/price_adjustment.html')">基价调整</a>
-        <a href="#" onclick="loadPage('administrators_html/print_report.html')">打印报表</a>
+        <a href="#" onclick="loadPage('/price_adjustment')">基价调整</a>
+        <a href="#" onclick="loadPage('/print_report')">打印报表</a>
         <a href="#" onclick="backupData()">备份数据</a>
         <a href="#" onclick="logout()">退出登录</a>
     </nav>
@@ -54,9 +54,9 @@
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         // 请求成功
-                        var response = JSON.parse(xhr.responseText);
+                        var response =xhr.responseText;
 
-                        if (response.success) {
+                        if (response=='true') {
                             // 后端返回true，备份成功
                             alert("备份成功！");
                         } else {

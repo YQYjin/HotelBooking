@@ -4,8 +4,10 @@ import lombok.Data;
 
 @Data
 public class Checkin_report {
-    private int id;
-    private String name;
-    private String roomNumber;
-    private String departureDate;
+    private String date;
+    private int prepayment;
+    private int prepayment60;
+    private int regularBooking;
+    private int rewardBooking;
+    private int totalRooms;
 }

@@ -96,32 +96,28 @@
 
     <script>
         function registerUser() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirmPassword').value;
-            var accountType = document.getElementById('accountType').value;
+            var username = encodeURIComponent(document.getElementById('username').value);
+            var password = encodeURIComponent(document.getElementById('password').value);
+            var confirmPassword = encodeURIComponent(document.getElementById('confirmPassword').value);
+            var accountType = encodeURIComponent(document.getElementById('accountType').value);
 
             if (password !== confirmPassword) {
                 alert("前后密码不一致");
                 return;
             }
 
-            var data = {
-                username: username,
-                password: password,
-                accountType: accountType
-            };
+            var url = 'registeruser?username=' + username + '&password=' + password + '&accountType=' + accountType;
 
             var xhr = new XMLHttpRequest();
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        var result =  xhr.responseText;
+                        var result = xhr.responseText;
                         if (result == 'true') {
-                            document.getElementById('registrationResult').innerHTML = "注册成功，请登录";
+                            alert("注册成功，请登录！")
                         } else {
-                            document.getElementById('registrationResult').innerHTML = "注册失败";
+                            alert("注册失败，请重试！")
                         }
                     } else {
                         console.error('Error:', xhr.statusText);
@@ -129,10 +125,12 @@
                 }
             };
 
-            xhr.open('POST', 'registeruser', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify(data));
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send();
         }
+
+
 
         function return_index() {
             window.location.href = '/index';

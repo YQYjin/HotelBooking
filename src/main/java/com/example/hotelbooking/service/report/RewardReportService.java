@@ -16,7 +16,7 @@ import java.util.List;
 public class RewardReportService {
     @Autowired
     RewardReportMapper rewardReportMapper;
-    public List<Reward_report> getRewardReport(Date startDate, Date endDate){
+    public List<Reward_report> getRewardReport(String startDate, String endDate){
         QueryWrapper<Reward_report> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startDate, endDate);
         // 如果你的字段名是 endTime，也可以使用 queryWrapper.between("end_time", startTime, endTime);

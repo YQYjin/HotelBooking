@@ -13,10 +13,10 @@
     </header>
     
     <nav>
-        <a href="#" onclick="loadPage('employee_html/manage_reservations.html')">管理预定信息</a>
-        <a href="#" onclick="loadPage('employee_html/generate_report.html')">生成报表</a>
-        <a href="#" onclick="loadPage('employee_html/generate_penalty.html')">生成罚单</a>
-        <a href="#" onclick="loadPage('employee_html/send_email.html')">发送邮件</a>
+        <a href="#" onclick="loadPage('/manage_reservations')">管理预定信息</a>
+        <a href="#" onclick="loadPage('/generate_report')">生成报表</a>
+        <a href="#" onclick="loadPage('/generate_penalty')">生成罚单</a>
+        <a href="#" onclick="loadPage('/send_email')">发送邮件</a>
         <a href="#" onclick="logout()">退出登录</a>
     </nav>
     
@@ -44,7 +44,7 @@
         }
         function logout() {
         // Redirect to the index.html page (adjust the path accordingly)
-        window.location.href = 'index.html';
+        window.location.href = '/index';
     }
     </script>
     

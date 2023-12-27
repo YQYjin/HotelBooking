@@ -16,7 +16,7 @@ import java.util.List;
 public class IncomeReportService {
     @Autowired
     IncomeReportMapper incomeReportMapper;
-    public List<Income_report> getIncomeReport(Date startDate, Date endDate){
+    public List<Income_report> getIncomeReport(String startDate, String endDate){
         QueryWrapper<Income_report> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startDate, endDate);
         // 如果你的字段名是 endTime，也可以使用 queryWrapper.between("end_time", startTime, endTime);

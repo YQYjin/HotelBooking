@@ -16,7 +16,9 @@ public class FineControl {
     @PostMapping("/getticket")
     // 获取罚单
     public Fine getTicket(String username){
+        System.out.println(username);
         Fine response=fineService.getTicket(username);
+        System.out.println(response);
         return response;
     }
     // 生成罚单

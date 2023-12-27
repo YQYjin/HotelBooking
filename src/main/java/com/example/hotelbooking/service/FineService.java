@@ -26,7 +26,7 @@ public class FineService {
     // 获取罚单
     public Fine getTicket(String username){
         QueryWrapper<Fine> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("username",username);
+        queryWrapper.eq("user",username);
         Fine fine=fineMapper.selectOne(queryWrapper);
         return fine;
     }
