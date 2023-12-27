@@ -17,8 +17,9 @@ public class AdvanceBookingService extends BookingsService{
         // 获取基价
         double basePrice=getBasePrice();
         bookings.setBasePrice(basePrice);
-        // TODO: 计算总价
-
+        double totalPrice=calculateTotalPrice(basePrice);
+        bookings.setTotalPrice(totalPrice);
+        bookings.setTime(getTime());
         bookingsMapper.insert(bookings);
         return "true";
     }

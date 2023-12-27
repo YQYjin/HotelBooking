@@ -3,8 +3,6 @@ package com.example.hotelbooking.service.booking;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.hotelbooking.bean.Bookings;
-import com.example.hotelbooking.bean.Checkin;
-import com.example.hotelbooking.bean.Email;
 import com.example.hotelbooking.bean.Rooms;
 import com.example.hotelbooking.mapper.BookingsMapper;
 import com.example.hotelbooking.mapper.RoomsMapper;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -54,6 +54,16 @@ public class BookingsService {
     public Boolean cheackcredit(String username,String creditno){
         Boolean res=creditCardService.check(username,creditno);
         return res;
+    }
+    public String getTime(){
+        LocalDate currentDate = LocalDate.now();
+
+        // 定义日期格式化器
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
+
+        // 将当前日期格式化为字符串
+        String currentDateAsString = currentDate.format(formatter);
+        return currentDateAsString;
     }
     public List<Bookings> getBookings(String username)
     {

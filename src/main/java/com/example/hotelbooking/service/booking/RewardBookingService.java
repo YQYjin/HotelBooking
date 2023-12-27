@@ -40,6 +40,7 @@ public class RewardBookingService extends BookingsService{
             }
         }
         bookings.setTotalPrice(totalPrice);
+        bookings.setTime(getTime());
         bookingsMapper.insert(bookings);
         return "true";
     }
