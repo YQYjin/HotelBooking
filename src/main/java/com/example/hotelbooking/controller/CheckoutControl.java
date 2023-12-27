@@ -1,5 +1,8 @@
 package com.example.hotelbooking.controller;
 
+import com.example.hotelbooking.bean.Check_out;
+import com.example.hotelbooking.service.CheckoutService;
+import org.springframework.web.bind.annotation.GetMapping;
 import com.example.hotelbooking.service.CheckInService;
 import com.example.hotelbooking.service.CheckoutService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,9 +14,14 @@ import javax.annotation.Resource;
 public class CheckoutControl {
     @Resource
     private CheckoutService checkoutService;
+    CheckoutService checkoutService;
     @PostMapping("/checkoutroom")
-    public String checkOut(String bookno){
-        String response=checkoutService.checkOut(bookno);
+    public String checkOut(String bookno) {
+        String response = checkoutService.checkOut(bookno);
         return response;
+    }
+    @GetMapping("/payment")
+    public Check_out getByUser(String username){
+        return checkoutService.getByUser(username);
     }
 }
