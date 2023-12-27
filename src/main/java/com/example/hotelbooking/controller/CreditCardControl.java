@@ -17,7 +17,9 @@ public class CreditCardControl {
     // 获取信用卡信息
     @PostMapping("/getCreditCardData")
     public List<Credit_card> getCreditCardData(String username) {
+        System.out.println(username);
         List<Credit_card> list=creditCardService.getCreditCard(username);
+        System.out.println(list);
         return list;
     }
 

@@ -16,8 +16,8 @@
 </div>
 
 <!-- 添加信用卡信息表单 -->
-<h2>添加信用卡信息</h2>
 <form id="addCreditCardForm">
+    <h2>添加信用卡信息</h2>
     <label for="cardNumber">卡号：</label>
     <input type="text" id="cardNumber" name="cardNumber" required>
     <br>
@@ -35,9 +35,9 @@
     // 显示信用卡信息
     function displayCreditCards() {
         var xhr = new XMLHttpRequest();
-
+        alert(username);
         // 配置请求，使用POST方法发送数据
-        xhr.open('POST', '/getCreditCardData', true);
+        xhr.open('POST', '/getCreditCardData?username='+ encodeURIComponent(username), true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         // 设置回调函数，处理请求完成后的逻辑
@@ -45,7 +45,7 @@
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // 请求成功
                 var creditCardData = JSON.parse(xhr.responseText);
-                console.log(creditCardData);
+                alert(creditCardData)
 
                 // 返回的数据格式如下
                 // data = [
@@ -61,7 +61,7 @@
         };
 
         // 将数据发送到后端
-        xhr.send(JSON.stringify({ username: username }));
+        xhr.send();
         
         const creditCardList = document.getElementById('creditCardList');
         creditCardList.innerHTML = '';

@@ -23,12 +23,12 @@
           </form>
           <div class="divider">其他用户登录</div>
           <div class="text-center">
-            <a href="employee_sign.html" title="Employee" class="btn btn-circle btn-sm btn-employee mr-2">雇员登录</a>
-            <a href="index.html" title="Administrator" class="btn btn-circle btn-sm btn-administrators mr-2">普通用户登录</a>
+            <a href="/employee_sign" title="Employee" class="btn btn-circle btn-sm btn-employee mr-2">雇员登录</a>
+            <a href="/index" title="Administrator" class="btn btn-circle btn-sm btn-administrators mr-2">普通用户登录</a>
           </div>
           <hr class="w-30"/>
           <p class="text-center text-muted small-2">还没有账号？ 
-            <a href="user-register.html">现在注册</a>
+            <a href="/user-register">现在注册</a>
           </p>
         </div>
       </main>
@@ -54,7 +54,7 @@
                 //将用户名保存到本地存储
                 localStorage.setItem('username', username);
                 // 登录成功，跳转到其他界面
-                window.location.href = 'administrators_home.html';
+                window.location.href = '/administrators_home';
               } else {
                 // 登录失败，弹窗提示
                 alert('登录失败，请检查用户名和密码');

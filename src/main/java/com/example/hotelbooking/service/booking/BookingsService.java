@@ -11,7 +11,7 @@ import com.example.hotelbooking.service.CreditCardService;
 import com.example.hotelbooking.service.FineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -35,7 +35,11 @@ public class BookingsService {
     // 取消预订
     public String cancelBooking(String id){
         Bookings bookings=bookingsMapper.selectById(id);
+        System.out.println(id);
+        System.out.println(bookings.getStatus());
         bookings.setStatus(0);
+        System.out.println(bookings.getStatus());
+        bookingsMapper.updateById(bookings);
         return "true";
     }
     public String deleteBooking(String id){
@@ -56,13 +60,14 @@ public class BookingsService {
         return res;
     }
     public String getTime(){
-        LocalDate currentDate = LocalDate.now();
+        // 获取当前日期
+        LocalDateTime currentDateTime = LocalDateTime.now();
 
         // 定义日期格式化器
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
 
         // 将当前日期格式化为字符串
-        String currentDateAsString = currentDate.format(formatter);
+        String currentDateAsString = currentDateTime.format(formatter);
         return currentDateAsString;
     }
     public List<Bookings> getBookings(String username)

@@ -32,40 +32,42 @@
         var bookings = getBookingsInfo();
         var container = document.getElementById("bookings-container");
 
-        bookings.forEach(function(booking, index) {
+        bookings.forEach(function(booking) {
             var bookingInfoDiv = document.createElement("div");
             bookingInfoDiv.className = "booking-info";
             bookingInfoDiv.innerHTML = `
-                <h2>预定信息 ${index + 1}</h2>
-                <p><strong>预定编号:</strong> <span class="booking-no">${booking.bookno}</span></p>
-                <p><strong>预定时间:</strong> <span class="booking-time">${booking.time}</span></p>
-                <p><strong>预定类型:</strong> <span class="booking-type">${booking.type}</span></p>
-                <button class="cancel-btn" onclick="cancelBooking(${index})">取消预定</button>
-            `;
-            container.appendChild(bookingInfoDiv);
+            <h2>预定信息</h2>
+            <p><strong>预定编号:</strong> <span class="booking-no">${booking.bookno}</span></p>
+            <p><strong>预定时间:</strong> <span class="booking-time">${booking.time}</span></p>
+            <p><strong>预定类型:</strong> <span class="booking-type">${booking.type}</span></p>
+            <button class="cancel-btn" onclick="cancelBooking('${booking.bookno}')">取消预定</button>
+        `;
+            if(booking.status==1){
+            container.appendChild(bookingInfoDiv);}
         });
     }
 
-    // 取消预定的函数
-    function cancelBooking(index) {
-        var bookingNo = document.querySelector(`.booking-info:nth-child(${index + 1}) .booking-no`).textContent;
-
+    function cancelBooking(bookingNo) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/cancelbooking', true);
+        //alert(bookingNo);
+        // 将参数添加到URL的查询字符串中
+        var url = '/cancelbooking?bookingNo=' + encodeURIComponent(bookingNo);
+
+        xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    var response =  xhr.responseText;
+                    var response = xhr.responseText;
                     if (response == 'true') {
                         // 取消预定成功
-                        alert(`预定 ${index + 1} 已取消！`);
+                        alert('预定已取消！');
                         // 刷新页面或执行其他操作
-                        init();
+                        location.reload(true);
                     } else {
                         // 取消预定失败
-                        alert(`取消预定失败，请重试或联系客服！`);
+                        alert('取消预定失败，请重试！');
                     }
                 } else {
                     // 处理其他错误
@@ -74,9 +76,11 @@
             }
         };
 
-        // 发送取消预定请求
-        xhr.send(JSON.stringify({ bookingNo: bookingNo }));
+        // 不再发送请求体，因为参数在URL中
+        xhr.send();
     }
+
+
 
 
     // 页面加载完成时初始化

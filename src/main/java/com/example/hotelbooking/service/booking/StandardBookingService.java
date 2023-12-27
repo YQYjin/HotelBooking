@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StandardBookingService extends BookingsService{
-    private final String type="常规预订";
+    private final String type="3";
     @Override
     public String makeBooking(String username,String startDate,String endDate){
         Bookings bookings=new Bookings();

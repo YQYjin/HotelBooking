@@ -26,6 +26,10 @@ public class BookingContorl {
     @PostMapping("/booking")
     // 预订
     public String booking(String username,String bookingType,String startDate,String endDate,String creditno) throws ParseException {
+        System.out.println(
+                "1"
+        );
+        System.out.println(username+bookingType+startDate+endDate+creditno);
         if(!bookingsService.cheackcredit(username, creditno)){
             return "false";
         }

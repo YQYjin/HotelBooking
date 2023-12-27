@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 @Service
 public class RewardBookingService extends BookingsService{
-    private final String type="奖励预订";
+    private final String type="4";
     @Resource
     private CheckRewardService checkRewardService;
     @Override

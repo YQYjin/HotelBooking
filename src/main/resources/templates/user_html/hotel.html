@@ -32,21 +32,29 @@
 
 <script>
     var username = localStorage.getItem('username');
+
     function applyBooking() {
         var startDate = document.getElementById('startDate').value;
         var endDate = document.getElementById('endDate').value;
         var bookingType = document.getElementById('bookingType').value;
         var creditno = document.getElementById('creditno').value;
 
+        // 构建查询字符串
+        var queryString = 'username=' + encodeURIComponent(username) +
+            '&startDate=' + encodeURIComponent(startDate) +
+            '&endDate=' + encodeURIComponent(endDate) +
+            '&bookingType=' + encodeURIComponent(bookingType) +
+            '&creditno=' + encodeURIComponent(creditno);
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/booking', true);
+        // 将参数添加到URL
+        xhr.open('POST', '/booking?' + queryString, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    var response =  xhr.responseText;
-                    if (response=='true') {
+                    var response = xhr.responseText;
+                    if (response == 'true') {
                         alert('预订申请已提交！');
                     } else {
                         alert('预订失败，请重试！');
@@ -58,16 +66,10 @@
             }
         };
 
-        var data = JSON.stringify({
-            username: username,
-            startDate: startDate,
-            endDate: endDate,
-            bookingType: bookingType,
-            creditno: creditno
-        });
-
-        xhr.send(data);
+        // 不再发送JSON数据，直接发送空数据
+        xhr.send();
     }
+
 </script>
 
 </body>

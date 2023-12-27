@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PrepayBookingService extends BookingsService{
-    private final String type="预付金预定";
+    private final String type="1";
 
     @Override
     public String makeBooking(String username,String startDate,String endDate){
