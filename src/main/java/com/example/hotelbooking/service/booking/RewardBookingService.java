@@ -14,10 +14,7 @@ public class RewardBookingService extends BookingsService{
     @Resource
     private CheckRewardService checkRewardService;
     @Override
-    public String makeBooking(String username,String startDate,String endDate,String creditno) throws ParseException {
-        if(!cheackcredit(username, creditno)){
-            return "false";
-        }
+    public String makeBooking(String username,String startDate,String endDate) throws ParseException {
         Bookings bookings=new Bookings();
         bookings.setUsername(username);
         bookings.setStartDate(startDate);

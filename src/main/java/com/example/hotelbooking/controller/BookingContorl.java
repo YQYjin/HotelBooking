@@ -26,17 +26,21 @@ public class BookingContorl {
     @PostMapping("/booking")
     // 预订
     public String booking(String username,String bookingType,String startDate,String endDate,String creditno) throws ParseException {
+        if(!bookingsService.cheackcredit(username, creditno)){
+            return "false";
+        }
+
         if(bookingType.equals("1")){
-            String response=prepayBookingService.makeBooking(username,startDate,endDate,creditno);
+            String response=prepayBookingService.makeBooking(username,startDate,endDate);
             return response;
         } else if (bookingType.equals("2")) {
-            String response=advanceBookingService.makeBooking(username,startDate,endDate,creditno);
+            String response=advanceBookingService.makeBooking(username,startDate,endDate);
             return response;
         } else if (bookingType.equals("3")) {
-            String response=standardBookingService.makeBooking(username,startDate,endDate,creditno);
+            String response=standardBookingService.makeBooking(username,startDate,endDate);
             return response;
         } else if (bookingType.equals("4")) {
-            String response=rewardBookingService.makeBooking(username,startDate,endDate,creditno);
+            String response=rewardBookingService.makeBooking(username,startDate,endDate);
             return response;
         } else {
             return "false";

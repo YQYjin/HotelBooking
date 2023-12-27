@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class BackUpControl {
+public class  BackUpControl {
     @Autowired
     private BackUpService backUpService;
     @GetMapping("/backup")
     public String backUp(){
-        return "true";
+        return backUpService.backUp();
     }
 }

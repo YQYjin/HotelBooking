@@ -53,12 +53,5 @@ public class CheckInService {
         checkinMapper.insert(checkin);
         return "true";
     }
-    public String checkOut(String bookno){
-        // 获取预订信息
-        Bookings booking=bookingsMapper.selectById(bookno);
-        int roomNo=booking.getRoomno();
-        // 将房间设为空置
-        roomService.changeRoomStatus(roomNo,0);
-        return "true";
-    }
+
 }

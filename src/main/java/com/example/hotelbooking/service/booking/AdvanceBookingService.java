@@ -5,10 +5,8 @@ import com.example.hotelbooking.bean.Bookings;
 public class AdvanceBookingService extends BookingsService{
     private final String type="提前60天预订";
     @Override
-    public String makeBooking(String username,String startDate,String endDate,String creditno){
-        if(!cheackcredit(username, creditno)){
-            return "false";
-        }
+    public String makeBooking(String username,String startDate,String endDate){
+
         Bookings bookings=new Bookings();
         bookings.setUsername(username);
         bookings.setStartDate(startDate);

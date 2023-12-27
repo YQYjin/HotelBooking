@@ -7,10 +7,7 @@ public class PrepayBookingService extends BookingsService{
     private final String type="预付金预定";
 
     @Override
-    public String makeBooking(String username,String startDate,String endDate,String creditno){
-        if(!cheackcredit(username, creditno)){
-            return "false";
-        }
+    public String makeBooking(String username,String startDate,String endDate){
         Bookings bookings=new Bookings();
         bookings.setUsername(username);
         bookings.setStartDate(startDate);
