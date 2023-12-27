@@ -33,7 +33,7 @@
         var username = localStorage.getItem('username');
 
         // 从后端获取订单和罚单信息的函数
-        function getReceiptInfo() {
+        function getPaymentInfo() {
             // 创建一个新的XMLHttpRequest对象
             var xhr = new XMLHttpRequest();
 
@@ -46,25 +46,34 @@
                     if (xhr.status === 200) {
                         // 解析从后端获取的 JSON 数据
                         var data = JSON.parse(xhr.responseText);
+                        console.log(data);
+                        return data;
+                    } else {
+                        // 处理请求错误
+                        console.error('Error fetching data from the server.');
+                    }
+                }
+            };
 
-                        // 在实际应用中，可能需要根据返回的数据进行相应的处理
-                        // 这里简单地返回一个包含订单信息和罚款信息的假数据
-                        var result = {
-                            checkout: {
-                                user: data.checkout.user,
-                                hotel: data.checkout.hotel,
-                                time: data.checkout.time,
-                                amount: data.checkout.amount,
-                            },
-                            fine: {
-                                user: data.fine.user,
-                                reason: data.fine.reason,
-                                amount: data.fine.amount,
-                            },
-                        };
+            // 发送请求
+            xhr.send();
+        }
 
-                        // 在这里处理 result，可能是更新页面上的信息等
-                        console.log(result);
+        function getPunishInfo() {
+            // 创建一个新的XMLHttpRequest对象
+            var xhr = new XMLHttpRequest();
+
+            // 配置请求
+            xhr.open('GET', '/punish?username=' + encodeURIComponent(username), true);
+
+            // 设置回调函数，处理请求完成时的操作
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // 解析从后端获取的 JSON 数据
+                        var data = JSON.parse(xhr.responseText);
+                        console.log(data);
+                        return data;
                     } else {
                         // 处理请求错误
                         console.error('Error fetching data from the server.');
@@ -86,7 +95,7 @@
             const timeCheckoutElement = document.getElementById('timeCheckout');
             const checkoutAmountElement = document.getElementById('checkoutAmount');
 
-            const receiptInfo = getReceiptInfo().checkout;
+            const receiptInfo = getPaymentInfo();
             
             userCheckoutElement.textContent = receiptInfo.user;
             hotelCheckoutElement.textContent = receiptInfo.hotel;
@@ -100,7 +109,7 @@
             const reasonFineElement = document.getElementById('reasonFine');
             const fineAmountElement = document.getElementById('fineAmount');
 
-            const receiptInfo = getReceiptInfo().fine;
+            const receiptInfo = getPunishInfo();
             
             userFineElement.textContent = receiptInfo.user;
             reasonFineElement.textContent = receiptInfo.reason;

@@ -117,8 +117,8 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        var result = JSON.parse(xhr.responseText);
-                        if (result.success) {
+                        var result =  xhr.responseText;
+                        if (result == 'true') {
                             document.getElementById('registrationResult').innerHTML = "注册成功，请登录";
                         } else {
                             document.getElementById('registrationResult').innerHTML = "注册失败";

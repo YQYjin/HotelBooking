@@ -11,8 +11,10 @@
 <h1>酒店预订</h1>
 
 <form id="bookingForm" action="submit_booking.php" method="post">
-    <label for="checkInDate">入住日期：</label>
-    <input type="date" id="checkInDate" name="checkInDate" required>
+    <label for="startDate">入住日期：</label>
+    <input type="date" id="startDate" name="startDate" required>
+    <label for="endDate">离开日期：</label>
+    <input type="date" id="endDate" name="endDate" required>
 
     <label for="bookingType">预订类型：</label>
     <select id="bookingType" name="bookingType" required>
@@ -22,14 +24,19 @@
         <option value="4">奖励预订</option>
     </select>
 
+    <label for="creditno">银行卡号：</label>
+    <input type="text" id="creditno" name="creditno" required>
+
     <button type="button" onclick="applyBooking()">申请预定</button>
 </form>
 
 <script>
     var username = localStorage.getItem('username');
     function applyBooking() {
-        var checkInDate = document.getElementById('checkInDate').value;
+        var startDate = document.getElementById('startDate').value;
+        var endDate = document.getElementById('endDate').value;
         var bookingType = document.getElementById('bookingType').value;
+        var creditno = document.getElementById('creditno').value;
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/booking', true);
@@ -38,8 +45,8 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.success) {
+                    var response =  xhr.responseText;
+                    if (response=='true') {
                         alert('预订申请已提交！');
                     } else {
                         alert('预订失败，请重试！');
@@ -53,8 +60,10 @@
 
         var data = JSON.stringify({
             username: username,
-            checkInDate: checkInDate,
-            bookingType: bookingType
+            startDate: startDate,
+            endDate: endDate,
+            bookingType: bookingType,
+            creditno: creditno
         });
 
         xhr.send(data);

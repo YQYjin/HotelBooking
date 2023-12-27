@@ -92,8 +92,8 @@
             if (addXhr.readyState == 4) {
                 if (addXhr.status == 200) {
                     // 请求成功
-                    const response = JSON.parse(addXhr.responseText);
-                    if (response.success) {
+                    const response =  xhr.responseText;
+                    if (response == 'true') {
                         alert('添加成功');
                         // 刷新获取信用卡信息
                         displayCreditCards();
@@ -131,8 +131,8 @@
             if (deleteXhr.readyState == 4) {
                 if (deleteXhr.status == 200) {
                     // 请求成功
-                    const response = JSON.parse(deleteXhr.responseText);
-                    if (response.success) {
+                    const response =  xhr.responseText;
+                    if (response == 'true') {
                         alert('删除成功');
                         // 刷新获取信用卡信息
                         displayCreditCards();

@@ -35,19 +35,17 @@
             var result = generateTicket(username);
 
             // 处理后端返回的数据
-            if (result.success) {
-                // 生成成功
-                if (result.data.fine === 0) {
-                    // 金额为0，显示无罚款
-                    alert("生成成功，无罚款");
-                } else {
-                    // 显示罚单详情
-                    alert("生成成功\n用户名: " + result.data.username + "\n原因: " + result.data.reason + "\n罚款价格: " + result.data.fine);
-                }
-            } else {
-                // 生成失败
-                alert("生成失败");
+            // 生成成功
+            if (result.fine == 0) {
+                // 金额为0，显示无罚款
+                alert("生成成功，无罚款");
+            } else if (result.fine != 0){
+                // 显示罚单详情
+                alert("生成成功\n用户名: " + result.username + "\n原因: " + result.reason + "\n罚款价格: " + result.fine);
+            } else{
+                alert("罚单获取失败，请重试！");
             }
+        
         }
     </script>
     <link rel="stylesheet" href="employee.css">

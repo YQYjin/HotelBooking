@@ -39,8 +39,8 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.success) {
+                        var response = xhr.responseText;
+                        if (response=='true') {
                             // 修改成功
                             document.getElementById("result").innerText = "修改成功";
                             getCurrentPrice(); // 刷新当前基价显示
