@@ -10,6 +10,10 @@ public class PrepayBookingService extends BookingsService{
 
     @Override
     public String makeBooking(String username,String startDate,String endDate){
+        if(roomCount<=0){
+            return "false";
+        }
+        roomCount=roomCount-1;
         Bookings bookings=new Bookings();
         bookings.setUsername(username);
         bookings.setStartDate(startDate);

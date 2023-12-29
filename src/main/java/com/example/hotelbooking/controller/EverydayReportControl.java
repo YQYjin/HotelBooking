@@ -23,6 +23,7 @@ public class EverydayReportControl {
     }
     @PostMapping("/checkin_report")
     public List<EverydayReport> getStayReport(String date) throws ParseException {
+        System.out.println(everydayStayService.getStayReport(date));
         return everydayStayService.getStayReport(date);
     }
 }

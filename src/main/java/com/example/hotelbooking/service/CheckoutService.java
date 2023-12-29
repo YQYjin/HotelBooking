@@ -3,6 +3,7 @@ package com.example.hotelbooking.service;
 
 import com.example.hotelbooking.bean.Bookings;
 import com.example.hotelbooking.mapper.BookingsMapper;
+import com.example.hotelbooking.service.booking.BookingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -21,6 +22,7 @@ public class CheckoutService {
     private BookingsMapper bookingsMapper;
 
     public String checkOut(String bookno) {
+        BookingsService.roomCount=BookingsService.roomCount+1;
         // 获取预订信息
         Bookings booking = bookingsMapper.selectById(bookno);
         int roomNo = booking.getRoomno();

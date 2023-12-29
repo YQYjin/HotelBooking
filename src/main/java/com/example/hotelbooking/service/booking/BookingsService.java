@@ -28,12 +28,14 @@ public class BookingsService {
     protected CreditCardService creditCardService;
     @Resource
     protected BasePriceService basePriceService;
+    public static int roomCount=45;
     // 预订,会被子类重写
     public String makeBooking(String username, String startTime,String endTime) throws ParseException {
         return "false";
     }
     // 取消预订
     public String cancelBooking(String id){
+        roomCount=roomCount+1;
         Bookings bookings=bookingsMapper.selectById(id);
         System.out.println(id);
         System.out.println(bookings.getStatus());

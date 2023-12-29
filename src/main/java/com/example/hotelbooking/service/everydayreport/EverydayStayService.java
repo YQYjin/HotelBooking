@@ -30,6 +30,7 @@ public class EverydayStayService {
             // 将时间转为日期
             String checkinTime=checkin.getCheckinTime();
             String checkinDateStr=checkinTime.substring(0, 10);
+            System.out.println(checkinDateStr);
             Date checkinDate=dateFormat.parse(checkinDateStr);
             String departureTime=checkin.getDepartureDate();
             String departureDateStr=departureTime.substring(0,10);
@@ -37,6 +38,7 @@ public class EverydayStayService {
             // 如果住宿登记的入住时间在date之前，离开时间在date之后
             if(checkinDate.compareTo(today)<=0&&departureDate.compareTo(today)>=0){
                 // 房间号
+                System.out.println(checkinDate);
                 String roomNumber=checkin.getRoomNumber();
                 // 姓名
                 String name=checkin.getName();
@@ -48,7 +50,7 @@ public class EverydayStayService {
                 report.setRoomNumber(roomNumber);
                 report.setName(name);
                 report.setDepartureDate(departureDateStr);
-
+                everydayStayReports.add(report);
             }
         }
 

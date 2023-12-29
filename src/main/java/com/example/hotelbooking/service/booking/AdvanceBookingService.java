@@ -8,7 +8,10 @@ public class AdvanceBookingService extends BookingsService{
     private final String type="2";
     @Override
     public String makeBooking(String username,String startDate,String endDate){
-
+        if(roomCount<=0){
+            return "false";
+        }
+        roomCount=roomCount-1;
         Bookings bookings=new Bookings();
         bookings.setUsername(username);
         bookings.setStartDate(startDate);
